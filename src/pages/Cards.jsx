@@ -1,33 +1,14 @@
-import React, { useEffect } from "react";
-import Carousel from "../components/Carousel";
-import PrintCard from "../components/PrintCard";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { loadClient } from "../redux/actions/clientAction";
+import React from 'react';
+import CardsData from '../components/CardsData';
+import '../styles/style.css';
 
-const Cards = () => {
-  const client = useSelector((state) => state.client.client);
-
-  const dispatch = useDispatch();
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-
-    if (client.firstName === "") {
-      dispatch(loadClient())
-        .unwrap() // Esto te permitirá manejar el resultado del thunk en caso de error o éxito
-        .catch((error) => setError(error.message));
-    }
-  }, [dispatch, client.firstName]);
-
+function Cards() {
   return (
-    <>
-      {client.cards.length !== 0 ? <PrintCard client={client} /> : ""}
-      <Carousel />
-    </>
+    <div className="w-full flex flex-col justify-center items-center min-h-[100vh]">
+      <h2 className="text-xl sm:text-3xl md:text-3xl lg:text-3xl xl:text-[50px] text-blue-800 2xl:text-[50px] 2xl:mt-10 md:mt-[13rem]">Your Cards</h2>
+      <CardsData />
+    </div>
   );
-};
+}
 
 export default Cards;

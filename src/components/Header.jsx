@@ -1,100 +1,120 @@
-import React, { useState } from "react";
-import Buttom from "./Buttom";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate, NavLink } from 'react-router-dom';
+import Swal from 'sweetalert2'; // Importar SweetAlert2
+import 'sweetalert2/dist/sweetalert2.min.css'; // Importar el CSS de SweetAlert2
+import '../styles/style.css';
 
-const Header = () => {
-  const location = useLocation();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+function Header() {
+  const [showNav, setShowNav] = useState(false);
+  const navigate = useNavigate();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  // Función para manejar el logout con confirmación
+  function handleLogout() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You are about to log out.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33', // Color del botón de confirmación (rojo)
+      cancelButtonColor: '#3085d6', // Color del botón de cancelación (azul)
+      confirmButtonText: 'Yes, log out!',
+      cancelButtonText: 'No, stay',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Acciones para cerrar sesión
+        localStorage.removeItem('token');
+        navigate('/');
+        Swal.fire({
+          title: 'Logged Out',
+          text: 'You have successfully logged out.',
+          icon: 'success',
+          timer: 2000, // Mostrar por 2 segundos antes de redirigir
+          showConfirmButton: false,
+        });
+      }
+    });
+  }
+
+  // Función para alternar la visibilidad del menú en pantallas pequeñas
+  const toggleNav = () => {
+    setShowNav(!showNav);
   };
 
   return (
-    <header className="h-20 z-50 flex  justify-between items-center sticky top-0 bg-[#dbd9fbf1] shadow-xl p-4 lg:p-0 lg:flex-row lg:justify-evenly">
-      <Link to="/accounts" className="flex gap-4 items-center">
-        <img
-          src="/public/unnamed.jpeg"
-          alt=""
-          className="object-cover w-12 h-12 lg:w-16 lg:h-16 rounded-full"
-        />
-        <h1 className="text-2xl lg:text-3xl font-bold">QuantumBank</h1>
-      </Link>
-
-      <button onClick={toggleMenu} className="lg:hidden">
-        {/* Espacio para la imagen del icono del menú */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="size-6"
+    <>
+      <header className='header'>
+        <div className='header-title'>
+          <h1 className='header-title-text'>BigBank</h1>
+        </div>
+        {/* Botón del menú para pantallas pequeñas */}
+        <button
+          id="menu"
+          onClick={toggleNav}
+          className='menu-button'
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
-          />
-        </svg>
-      </button>
+          {showNav ? "X" : "≡"}
+        </button>
+      </header>
 
-      <nav
-        className={`${
-          isMenuOpen ? "block" : "hidden"
-        } flex flex-col lg:flex-row absolute lg:static top-20 left-0 w-full lg:w-auto bg-[#dbd9fbf1] lg:flex lg:items-center lg:gap-4 transition-all duration-300 ease-in-out lg:block`}
-      >
-        <Link to="/accounts" onClick={() => setIsMenuOpen(false)}>
-          <Buttom
-            title="Accounts"
-            href="/accounts"
-            isActive={location.pathname.startsWith("/account")}
-          />
-        </Link>
-        <Link to="/Cards" onClick={() => setIsMenuOpen(false)}>
-          <Buttom
-            title="Cards"
-            href="/Cards"
-            isActive={
-              location.pathname.startsWith("/cards") ||
-              location.pathname.startsWith("/Card")
-            }
-          />
-        </Link>
-        <Link to="/Loans" onClick={() => setIsMenuOpen(false)}>
-          <Buttom
-            title="Loans"
-            href="/Loans"
-            isActive={location.pathname === "/Loans"}
-          />
-        </Link>
-        <Link to="/transactions" onClick={() => setIsMenuOpen(false)}>
-          <Buttom
-            title="Transactions"
-            href="/transactions"
-            isActive={location.pathname === "/transactions"}
-          />
-        </Link>
+      {/* Navegación, mostrar u ocultar basado en el estado showNav */}
+      <nav className={`nav ${showNav ? 'show' : ''}`}>
+        <ul className='nav-links gap-2 md:gap-3 lg:gap-5 xl:gap-10 2xl:gap-10'>
+          <button
+            onClick={() => navigate(-1)}
+            className="back-button"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+              <path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z" />
+            </svg>
+          </button>
+          <li>
+            <NavLink
+              to='/accounts'
+              className={({ isActive }) => isActive ? "active-link" : "nav-link"}
+            >
+              Accounts
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to='/newTransaction'
+              className={({ isActive }) => isActive ? "active-link" : "nav-link"}
+            >
+              Transactions
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to='/cards'
+              className={({ isActive }) => isActive ? "active-link" : "nav-link"}
+            >
+              Cards
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to='/loans'
+              className={({ isActive }) => isActive ? "active-link" : "nav-link"}
+            >
+              Loans
+            </NavLink>
+          </li>
+        </ul>
+        {/* Añadir una clase wrapper y mover el botón de logout fuera de la lista de navegación */}
+        <div className="logout-wrapper">
+          <button
+            onClick={handleLogout}
+            className="logout-button"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="RGB(255 255 255)">
+              <path d="M806-440H360q-17 0-28.5-11.5T320-480q0-17 11.5-28.5T360-520h446l-34-34q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T829-611l103 103q12 12 12 28t-12 28L829-349q-12 12-28.5 11.5T772-350q-11-12-11.5-28t11.5-28l34-34ZM600-640v-120H200v560h400v-120q0-17 11.5-28.5T640-360q17 0 28.5 11.5T680-320v120q0 33-23.5 56.5T600-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h400q33 0 56.5 23.5T680-760v120q0 17-11.5 28.5T640-600q-17 0-28.5-11.5T600-640Z" />
+            </svg>
+          </button>
+        </div>
       </nav>
 
-      <Link to="/login" className="hidden lg:block">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="size-6 duration-200 hover:stroke-[#4F46E5] hover:transform hover:scale-150"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
-          />
-        </svg>
-      </Link>
-    </header>
+    </>
   );
-};
+}
 
 export default Header;

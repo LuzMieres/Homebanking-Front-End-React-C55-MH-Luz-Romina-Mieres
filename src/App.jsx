@@ -1,41 +1,41 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Accounts from "./pages/Accounts";
-import Cards from "./pages/Cards";
-import Loans from "./pages/Loans";
-import Transactions from "./pages/Transactions";
-
-import MainLayout from "./layouts/MainLayout";
-import AccountDetails from "./pages/AccountDetails";
-import AddCard from "./pages/AddCard";
-import AddAccount from "./pages/AddAccount";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import MainLayout from './layouts/MainLayout.jsx';
+import Accounts from './pages/Accounts';
+import AccountData from './components/AccountData';
+import NewAccountForm from './components/NewAccountForm';
+import { TransactionsProvider } from './context/TransactionsContext'; // Asegúrate de que la ruta sea correcta
+import { LoanProvider } from './context/LoanContext'; // Importar LoanProvider
+import NewTransaction from './pages/NewTransaction';
+import Cards from './pages/Cards';
+import NewCard from './pages/NewCard';
+import Loans from './pages/Loans';
+import NewLoan from './pages/NewLoan';
+import Register from './pages/Register';
+import Login from './pages/Login';
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<MainLayout />}>
-        {/* Redirige la ruta raíz a "/accounts" */}
-        <Route index element={<Navigate to="login" replace />} />
-
-        <Route path="accounts" element={<Accounts />} />
-        <Route path="account/:id" element={<AccountDetails />} />
-        <Route path="accounts/addAccount" element={<AddAccount />} />
-
-        <Route path="cards" element={<Cards />} />
-        <Route path="cards/addCard" element={<AddCard />} />
-
-        <Route path="loans" element={<Loans />} />
-        <Route path="transactions" element={<Transactions />} />
-      </Route>
-
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-    </Routes>
-  </BrowserRouter>
-    </>
+    <BrowserRouter>
+      {/* Envolver con ambos proveedores */}
+      <TransactionsProvider>
+        <LoanProvider> {/* Añadir LoanProvider aquí */}
+          <Routes>
+            <Route index element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route element={<MainLayout />}>
+              <Route path='/accounts' element={<Accounts />} />
+              <Route path="/account/:id" element={<AccountData />} />
+              <Route path="/newAccount" element={<NewAccountForm />} />
+              <Route path="/newTransaction" element={<NewTransaction />} />
+              <Route path='/cards' element={<Cards />} />
+              <Route path='/newCard' element={<NewCard />} />
+              <Route path='/loans' element={<Loans />} />
+              <Route path='/newLoan' element={<NewLoan />} />
+            </Route>
+          </Routes>
+        </LoanProvider> {/* Cerrar LoanProvider */}
+      </TransactionsProvider>
+    </BrowserRouter>
   );
 }
 

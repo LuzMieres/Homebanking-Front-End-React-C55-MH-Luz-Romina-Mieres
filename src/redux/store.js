@@ -1,10 +1,13 @@
-// store.js
 import { configureStore } from "@reduxjs/toolkit";
-import clientReducer from "./reducers/clientReduce"; // Importa el clientReducer desde el archivo correcto
+import loadCurrentUserReducer from "./reducers/loadCurrentUserReducer";
+import loanReducer from "./reducers/loanReducer"; // Importa el nuevo reducer
+import { accountReducer } from "./reducers/newAccountReducer";
 
 const store = configureStore({
   reducer: {
-    client: clientReducer, // Asegúrate de registrar el clientReducer
+    currentUser: loadCurrentUserReducer,
+    loans: loanReducer, // Registra el nuevo reducer aquí
+    accountReducer: accountReducer,
   },
 });
 
