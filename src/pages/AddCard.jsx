@@ -51,7 +51,7 @@ const AddCard = () => {
     };
 
     axios
-      .post("http://localhost:8080/api/cards/clients/current/cards", card, {
+      .post("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/cards/clients/current/cards", card, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

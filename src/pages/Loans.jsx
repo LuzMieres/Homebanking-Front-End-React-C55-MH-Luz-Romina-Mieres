@@ -26,7 +26,7 @@ const Loans = () => {
       const token = localStorage.getItem("token");
 
       axios
-        .get("http://localhost:8080/api/loans/loansAvailable", {
+        .get("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/loans/loansAvailable", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -71,7 +71,7 @@ const Loans = () => {
     };
 
     axios
-      .post("http://localhost:8080/api/loans/apply", trans, {
+      .post("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/loans/apply", trans, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

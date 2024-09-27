@@ -4,7 +4,7 @@ import React from "react";
 const AddAccount = () => {
   axios
     .post(
-      "http://localhost:8080/api/clients/create?email=ludwingval@gmail.com&firstName=Valecillos&lastName=garcia"
+      "https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/clients/create?email=luzmieres@gmail.com&firstName=Luz&lastName=Mieres"
     )
     .then((response) => {
       console.log(response);

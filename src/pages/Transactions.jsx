@@ -44,7 +44,7 @@ const Transactions = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:8080/api/transactions/clients/current/transactions",
+        "https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/transactions/clients/current/transactions",
         trans,
         {
           headers: {

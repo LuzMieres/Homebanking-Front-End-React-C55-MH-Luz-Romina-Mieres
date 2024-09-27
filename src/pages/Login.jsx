@@ -20,7 +20,7 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:8080/api/auth/login",user);
+        "https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/login",user);
       localStorage.setItem("token", res.data);
       console.log(res.data);
 

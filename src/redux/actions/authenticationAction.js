@@ -16,7 +16,7 @@ export const loginAction = createAction("loginAction", (data) => {
 export const fetchClientData = createAsyncThunk("fetchClientData", async () => {
   const token = localStorage.getItem("token");
     
-  const response = await axios.get("http://localhost:8080/api/auth/current", {
+  const response = await axios.get("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/current", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

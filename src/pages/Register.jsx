@@ -52,7 +52,7 @@ const Register = () => {
   const sendPutRequest = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/register",
+        "https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/register",
         data,
         {
           headers: {

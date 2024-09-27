@@ -7,7 +7,7 @@ export const loadClient = createAsyncThunk("loadClient", async (_, { rejectWithV
   const token = localStorage.getItem("token");
   
   try {
-    const response = await axios.get("http://localhost:8080/api/auth/current", {
+    const response = await axios.get("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/current", {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data; // Devuelve los datos del cliente directamente
