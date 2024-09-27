@@ -32,7 +32,7 @@ function NewTransactionData() {
   }, []);
 
   function obtenerClient() {
-    axios.get("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/auth/current", {
+    axios.get("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/current", {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }

@@ -33,17 +33,9 @@ export const createTransactionAction = createAsyncThunk(
         return rejectWithValue("Transaction cancelled by user.");
       }
 
-      // Determinar la URL base de la API según el entorno
-      const baseURL =
-        import.meta.env.VITE_APP_ENV === "production"
-          ? import.meta.env.VITE_APP_API_URL_PRODUCTION
-          : import.meta.env.VITE_APP_API_URL_DEVELOPMENT;
-
-      console.log("Base URL:", baseURL);
-
       // Enviar la solicitud de transacción
       const response = await axios.post(
-        `${baseURL}/transactions/clients/current/transactions`, // Corrige la URL
+        `$https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/transactions/clients/current/transactions`, // Corrige la URL
         {
           sourceAccount,
           destinationAccount,

@@ -4,14 +4,6 @@ import { loadCurrentUserAction } from "./loadCurrentUserAction";
 
 // Acción para crear una nueva cuenta
 export const newAccountAction = (accountType) => async (dispatch) => {
-  // Determinar la URL base de la API según el entorno
-  const baseURL =
-    import.meta.env.VITE_APP_ENV === "production"
-      ? import.meta.env.VITE_APP_API_URL_PRODUCTION
-      : import.meta.env.VITE_APP_API_URL_DEVELOPMENT;
-
-  console.log("Base URL:", baseURL);
-
   try {
     // Obtener el token del localStorage
     const token = localStorage.getItem("token");
@@ -21,7 +13,7 @@ export const newAccountAction = (accountType) => async (dispatch) => {
 
     // Realizar la solicitud para crear una nueva cuenta
     const response = await axios.post(
-      `${baseURL}/clients/current/accounts`, // URL corregida con backticks
+      `$https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/clients/current/accounts`, // URL corregida con backticks
       {
         type: accountType // Datos a enviar en el cuerpo de la solicitud
       },

@@ -12,14 +12,9 @@ export const loadCurrentUserAction = createAsyncThunk(
     }
 
     // Determinar la URL base de la API según el entorno
-    const baseURL =
-      import.meta.env.VITE_APP_ENV === "production"
-        ? import.meta.env.VITE_APP_API_URL_PRODUCTION
-        : import.meta.env.VITE_APP_API_URL_DEVELOPMENT;
-
-    console.log("Base URL:", baseURL);
+    
     try {
-      const response = await axios.get(`${baseURL}/auth/current`, {
+      const response = await axios.get(`https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/current`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

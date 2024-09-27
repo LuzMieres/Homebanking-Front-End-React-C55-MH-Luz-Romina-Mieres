@@ -36,17 +36,9 @@ export const requestNewCardAction = createAsyncThunk(
       return rejectWithValue("Request cancelled by user.");
     }
 
-    // Determinar la URL base de la API según el entorno
-    const baseURL =
-      import.meta.env.VITE_APP_ENV === "production"
-        ? import.meta.env.VITE_APP_API_URL_PRODUCTION
-        : import.meta.env.VITE_APP_API_URL_DEVELOPMENT;
-
-    console.log("Base URL:", baseURL);
-
     try {
       // Enviar solicitud de nueva tarjeta
-      const response = await axios.post(`${baseURL}/cards/clients/current/cards`, 
+      const response = await axios.post(`$https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/cards/clients/current/cards`, 
       { 
         type, 
         color 

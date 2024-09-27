@@ -12,12 +12,7 @@ export const loadAvailableLoans = createAsyncThunk(
     }
 
     try {
-      const baseURL =
-        import.meta.env.VITE_APP_ENV === "production"
-          ? import.meta.env.VITE_APP_API_URL_PRODUCTION
-          : import.meta.env.VITE_APP_API_URL_DEVELOPMENT;
-
-      const response = await axios.get(`${baseURL}/loans/loansAvailable`, {
+      const response = await axios.get(`$https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/loans/loansAvailable`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -43,13 +38,8 @@ export const requestNewLoanAction = createAsyncThunk(
     }
 
     try {
-      const baseURL =
-        import.meta.env.VITE_APP_ENV === "production"
-          ? import.meta.env.VITE_APP_API_URL_PRODUCTION
-          : import.meta.env.VITE_APP_API_URL_DEVELOPMENT;
-
       const response = await axios.post(
-        `${baseURL}/loans/apply`,
+        `https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/loans/apply`,
         {
           loanName,
           amount,
