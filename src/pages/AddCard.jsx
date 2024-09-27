@@ -23,6 +23,11 @@ const AddCard = () => {
 
     if (token) {
       axios
+      // .get("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/current", {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`, // Incluye el token en el header Authorization
+      //   },
+      // })
         .get("http://localhost:8080/api/auth/current", {
           headers: {
             Authorization: `Bearer ${token}`, // Incluye el token en el header Authorization
@@ -49,9 +54,13 @@ const AddCard = () => {
       color: cardColor,
       type: cardType.toUpperCase(),
     };
-
     axios
-      .post("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/cards/clients/current/cards", card, {
+      // .post("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/cards/clients/current/cards", card, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+
+      .post("http://localhost:8080/api/cards/clients/current/cards", card, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

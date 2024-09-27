@@ -25,12 +25,18 @@ const Loans = () => {
     if (client.loans?.length <= 3) {
       const token = localStorage.getItem("token");
 
+      // axios
+      //   .get("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/loans/loansAvailable", {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   })
       axios
-        .get("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/loans/loansAvailable", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+      .get("http://localhost:8080/api/loans/loansAvailable", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then((response) => {
           setLoans(response.data);
         })
@@ -39,7 +45,6 @@ const Loans = () => {
         });
     }
   }, [client.loans]);
-
   useEffect(() => {
     if (!client.firstName) {
       dispatch(loadClient())
@@ -69,9 +74,12 @@ const Loans = () => {
       payments: paymentSelected.slice(0, 2).toString(),
       destinationAccount: accountOrigin,
     };
-
     axios
-      .post("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/loans/apply", trans, {
+      // .post("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/loans/apply", trans, {
+      //   headers: {
+      //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+      //   },
+      .post("http://localhost:8080/api/loans/apply", trans, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

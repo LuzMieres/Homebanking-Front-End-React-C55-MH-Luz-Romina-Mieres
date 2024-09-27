@@ -43,8 +43,17 @@ const Transactions = () => {
 
     try {
       const token = localStorage.getItem("token");
+      // await axios.post(
+      //   "https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/transactions/clients/current/transactions",
+      //   trans,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
       await axios.post(
-        "https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/transactions/clients/current/transactions",
+        "http://localhost:8080/api/transactions/clients/current/transactions",
         trans,
         {
           headers: {

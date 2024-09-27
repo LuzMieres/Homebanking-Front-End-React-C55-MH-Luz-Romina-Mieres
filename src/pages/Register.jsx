@@ -51,8 +51,17 @@ const Register = () => {
 
   const sendPutRequest = async (data) => {
     try {
+      // const response = await axios.post(
+      //   "https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/register",
+      //   data,
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // );
       const response = await axios.post(
-        "https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/register",
+        "http://localhost:8080/api/auth/register",
         data,
         {
           headers: {

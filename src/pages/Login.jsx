@@ -19,8 +19,19 @@ const Login = () => {
     const user = { email, password };
 
     try {
+      //     const res = await axios.post(
+      //       "https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/login",user);
+      //     localStorage.setItem("token", res.data);
+      //     console.log(res.data);
+
+      //     navigate("/accounts/");
+      //     dispatch(loadClient());
+      //   } catch (err) {
+      //     console.error(err);
+      //   }
+      // };
       const res = await axios.post(
-        "https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/login",user);
+        "http://localhost:8080/api/auth/login", user);
       localStorage.setItem("token", res.data);
       console.log(res.data);
 
@@ -30,7 +41,6 @@ const Login = () => {
       console.error(err);
     }
   };
-
   return (
     <section className="bg-white">
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
