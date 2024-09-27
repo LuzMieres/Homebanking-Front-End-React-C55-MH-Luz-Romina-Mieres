@@ -24,7 +24,7 @@ const Cards = () => {
 
   return (
     <>
-      {client.cards.length !== 0 ? <PrintCard client={client} /> : ""
+      {client.cards.length !== 0 ? <PrintCard client={client} /> : ""}
       <Carousel />
     </>
   );
