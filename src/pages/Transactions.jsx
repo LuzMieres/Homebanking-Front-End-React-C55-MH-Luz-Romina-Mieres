@@ -18,15 +18,20 @@ const Transactions = () => {
   const [accountNumber, setAccountNumber] = useState("");
   const [description, setDescription] = useState("");
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
+
+  // Determinar la URL base de la API según el entorno
+  const baseURL =
+    process.env.REACT_APP_ENV === "production"
+      ? process.env.REACT_APP_API_URL_PRODUCTION
+      : process.env.REACT_APP_API_URL_DEVELOPMENT;
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
     if (client.firstName === "") {
       dispatch(loadClient())
-        .unwrap() // Esto te permitirá manejar el resultado del thunk en caso de error o éxito
+        .unwrap()
         .catch((error) => setError(error.message));
     }
   }, [dispatch, client.firstName]);
@@ -43,17 +48,8 @@ const Transactions = () => {
 
     try {
       const token = localStorage.getItem("token");
-      // await axios.post(
-      //   "https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/transactions/clients/current/transactions",
-      //   trans,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
       await axios.post(
-        "http://localhost:8080/api/transactions/clients/current/transactions",
+        `${baseURL}/transactions/clients/current/transactions`,
         trans,
         {
           headers: {
@@ -66,8 +62,7 @@ const Transactions = () => {
         .unwrap()
         .catch((error) => setError(error.message));
     } catch (error) {
-      alert(error);
-      alert(error);
+      alert("Transaction failed: " + error.message);
     }
   };
 

@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Account from "../components/Account";
-import Banner from "../components/Banner";
 import Carousel from "../components/Carousel";
-import SpamInformativo from "../components/SpamInformativo";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loadClient } from "../redux/actions/clientAction";
-import Buttom from "../components/Buttom";
 
 const Main = () => {
   const [error, setError] = useState(null);
@@ -32,13 +29,9 @@ const Main = () => {
 
   return (
     <>
-      <SpamInformativo
-        title={`🙋‍♀️Welcome ${client.firstName} ${client.lastName}`}
-        text1="Here you'll find a clear and comprehensive summary of all your bank accounts. 👇"
-        text2="✨ Want more details? Simply click on any account to explore more."
-        text3="Enjoy a hassle-free banking experience! 🚀"
-        imgSrc="/public/Finance.png"
-      />
+      
+      <h2>{`🙋‍♀️Welcome ${client.firstName} ${client.lastName}`}</h2>
+       
       <div className="flex flex-wrap gap-4 my-10 lg:px-80 justify-evenly bg-[#81ccc1bd] m-5 rounded-3xl p-5 shadow-2xl">
         <h2 className="w-full text-center border-b-2 border-[#111827] px-1 pb-4 text-4xl font-medium text-[#111827]">
           Accounts
@@ -59,7 +52,6 @@ const Main = () => {
           Enter
         </button>
       </div>
-      <Banner />
       <Carousel />
     </>
   );

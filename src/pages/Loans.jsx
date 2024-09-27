@@ -21,22 +21,22 @@ const Loans = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // Determinar la URL base de la API según el entorno
+  const baseURL =
+    process.env.REACT_APP_ENV === "production"
+      ? process.env.REACT_APP_API_URL_PRODUCTION
+      : process.env.REACT_APP_API_URL_DEVELOPMENT;
+
   useEffect(() => {
     if (client.loans?.length <= 3) {
       const token = localStorage.getItem("token");
 
-      // axios
-      //   .get("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/loans/loansAvailable", {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   })
       axios
-      .get("http://localhost:8080/api/loans/loansAvailable", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+        .get(`${baseURL}/loans/loansAvailable`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((response) => {
           setLoans(response.data);
         })
@@ -44,7 +44,8 @@ const Loans = () => {
           console.error("Error fetching loans:", error);
         });
     }
-  }, [client.loans]);
+  }, [client.loans, baseURL]);
+
   useEffect(() => {
     if (!client.firstName) {
       dispatch(loadClient())
@@ -75,11 +76,7 @@ const Loans = () => {
       destinationAccount: accountOrigin,
     };
     axios
-      // .post("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/loans/apply", trans, {
-      //   headers: {
-      //     Authorization: `Bearer ${localStorage.getItem("token")}`,
-      //   },
-      .post("http://localhost:8080/api/loans/apply", trans, {
+      .post(`${baseURL}/loans/apply`, trans, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -130,14 +127,9 @@ const Loans = () => {
       <div className="bg-[#69c2b6d7] m-3 p-2 rounded-3xl shadow lg:m-10 lg:shadow-2xl lg:p-10">
         <div className="flex flex-col lg:flex-row lg:py-5 justify-evenly">
           {simplifiedLoans.length === 0 ? (
-            <div className="flex items-center justify-center lg:w-1/2">
-              <h2 className="text-3xl text-center bg-white m-5 p-5 rounded-3xl shadow-2xl">
-                You don't have any active loans yet! Take this opportunity to
-                request your first loan and get the financial support you need.
-                Our process is fast, simple, and designed to help you every step
-                of the way. Explore the available options and get started today!
-              </h2>
-            </div>
+            <h2 className="text-xl text-center bg-white m-5 p-5 rounded-3xl shadow-2xl">
+              Your Loans
+            </h2>
           ) : (
             <div className="flex items-center  justify-center lg:w-1/2">
               <Table

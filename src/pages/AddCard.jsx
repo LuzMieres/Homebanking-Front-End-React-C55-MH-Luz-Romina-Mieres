@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import SpamInformativo from "../components/SpamInformativo";
 import InputSelect from "../components/InputSelect";
 import Radio from "../components/inputs/Radio";
-import LabelInput from "../components/LabelInput";
 import axios from "axios";
 import Card from "../components/Card";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginAction } from "../redux/actions/authenticationAction";
 import { addCardToClient } from "../redux/actions/clientAction";
 
 const AddCard = () => {
@@ -99,14 +96,6 @@ const AddCard = () => {
   );
 
   return (
-    <div>
-      <SpamInformativo
-        title={`Add a New Card`}
-        text1="✨ Welcome to the creation view of your new bank card. Here, you can bring a new card to life that will accompany you on your financial adventures. 💳"
-        text2="👋 Complete the necessary details and, in the blink of an eye, you'll have your new card ready to use. Convenience and control are at your fingertips."
-        text3="💼 Remember, every card you create is another key to a future full of opportunities. Do it with confidence and style! 🚀"
-        imgSrc="/public/addCard.png"
-      />
       <div className="flex items-center justify-center py-10 text-xl">
         <div className="flex justify-center items-center gap-10 py-5 bg-[#C4DFFE] rounded-3xl w-1/2">
           {/* <img src="/public/card.png" alt="" className="w-1/4" /> */}
@@ -156,7 +145,6 @@ const AddCard = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
