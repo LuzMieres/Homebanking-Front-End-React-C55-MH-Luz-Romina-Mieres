@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LabelInput from "../components/LabelInput";
-import Button from "../components/Button";
+import Button from "../components/Buttom";
 import PasswordInput from "../components/PasswordInput";
 import EmailInput from "../components/EmailInput";
 import axios from "axios";
