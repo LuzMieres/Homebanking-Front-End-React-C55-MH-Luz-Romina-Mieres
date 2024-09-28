@@ -28,12 +28,15 @@ const availableLoans = [
 ];
 
 const NewLoanData = () => {
+  // Los hooks deben estar dentro del componente funcional
   const [formData, setFormData] = useState({
     name: '',
     sourceAccount: '',
     amount: '',
     payments: '',
+    description: '', // Añadir descripción al estado inicial
   });
+
   const [errors, setErrors] = useState({});
   const [rawAmount, setRawAmount] = useState('');
   const [selectedLoan, setSelectedLoan] = useState(null);
@@ -61,9 +64,10 @@ const NewLoanData = () => {
   }, [error]);
 
   useEffect(() => {
-    const isValid = formData.name && formData.sourceAccount && rawAmount && formData.payments && !amountError && Object.keys(errors).length === 0;
+    const isValid = formData.name && formData.sourceAccount && rawAmount && formData.payments && formData.description && !amountError && Object.keys(errors).length === 0;
     setIsFormValid(isValid);
   }, [formData, rawAmount, amountError, errors]);
+
 
   function handleLoanChange(event) {
     const selectedName = event.target.value;
@@ -94,6 +98,19 @@ const NewLoanData = () => {
       sourceAccount: selectedAccount ? '' : 'Please select an account.',
     }));
   }
+
+  function handleDescriptionChange(event) {
+    const description = event.target.value;
+    setFormData(prevState => ({
+      ...prevState,
+      description,
+    }));
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      description: description ? '' : 'Please enter a description.',
+    }));
+  }
+
 
   function handleAmountChange(event) {
     let enteredAmount = event.target.value.replace(/[^0-9]/g, '');
@@ -184,16 +201,18 @@ const NewLoanData = () => {
       totalAmount: totalWithInterest,
       payments: formData.payments,
       destinationAccountNumber: formData.sourceAccount,
+      description: formData.description, // Incluir la descripción en la solicitud
     };
+    
 
-    // Mostrar confirmación antes de enviar la solicitud
     Swal.fire({
       title: 'Confirm Loan Request',
       html: `
         <strong>Loan Type:</strong> ${formData.name} <br/>
         <strong>Amount:</strong> ${formatAmountToARS(rawAmountValue)} <br/>
         <strong>Payments:</strong> ${formData.payments} <br/>
-        <strong>Total with Interest:</strong> ${formatAmountToARS(totalWithInterest)}
+        <strong>Total with Interest:</strong> ${formatAmountToARS(totalWithInterest)} <br/>
+        <strong>Description:</strong> ${formData.description} <br/>
       `,
       icon: 'info',
       showCancelButton: true,
@@ -201,7 +220,7 @@ const NewLoanData = () => {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log('User confirmed the loan request'); // Verificar si la confirmación fue recibida
+        console.log('User confirmed the loan request');
         dispatch(requestNewLoanAction(newLoan));
       }
     });
@@ -316,6 +335,20 @@ const NewLoanData = () => {
             </select>
             {errors.sourceAccount && <p className="text-red-500 text-xs">{errors.sourceAccount}</p>}
           </div>
+          <div className="form-group">
+            <label className="form-label" htmlFor="description">Description</label>
+            <input
+              className="form-input border p-2 rounded"
+              type="text"
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleDescriptionChange}
+              placeholder="Enter a description"
+            />
+            {errors.description && <p className="text-red-500 text-xs">{errors.description}</p>}
+          </div>
+
           <button
             type="submit"
             className={`submit-button bg-blue-800 text-white p-2 rounded ${!isFormValid ? 'bg-gray-400 cursor-not-allowed' : 'hover:bg-blue-600 transition-colors duration-300'}`}

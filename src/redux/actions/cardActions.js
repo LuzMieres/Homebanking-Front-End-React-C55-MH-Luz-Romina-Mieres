@@ -1,4 +1,3 @@
-// src/redux/actions/requestNewCardAction.js
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -12,7 +11,7 @@ export const requestNewCardAction = createAsyncThunk(
       return rejectWithValue("No token available");
     }
 
-    const { client } = getState().client; // Acceder correctamente al estado del cliente
+    const { client } = getState().currentUser; // Obtener el cliente actual del estado global
 
     // Verificar si ya tiene una tarjeta del mismo tipo y color
     const existingCard = client.cards.find(card => card.type === type && card.color === color);
@@ -37,21 +36,25 @@ export const requestNewCardAction = createAsyncThunk(
     }
 
     try {
-      // Enviar solicitud de nueva tarjeta
-      const response = await axios.post(`$https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/cards/clients/current/cards`, 
-      { 
-        type, 
-        color 
+      const response = await axios.post("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/cards/clients/current/cards", {
+        type: type,
+        color: color,
       }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      
-      // Devuelve los datos de la nueva tarjeta creada
-      return response.data; 
+    // try {
+    //   const response = await axios.post("https://localhost:8080/api/cards/clients/current/cards", {
+    //     type: type,
+    //     color: color,
+    //   }, {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`
+    //     }
+    //   });
+      return response.data; // Devuelve los datos de la nueva tarjeta creada
     } catch (error) {
-      console.error("Error al solicitar la nueva tarjeta:", error);
       return rejectWithValue(
         error.response ? error.response.data : "There was a problem with the request."
       );

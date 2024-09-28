@@ -29,7 +29,6 @@ function NewCardData() {
   }, [error]);
 
   useEffect(() => {
-    // Cargar colores disponibles en función del tipo de tarjeta seleccionada
     if (formData.cardType && client) {
       const colors = ['GOLD', 'SILVER', 'TITANIUM'];
       const ownedColors = client.cards
@@ -39,14 +38,15 @@ function NewCardData() {
     } else {
       setAvailableColors([]);
     }
-  }, [formData.cardType, client]);
+  }, [formData.cardType, client, status]); // Agregar status como dependencia
+  
 
   useEffect(() => {
     // Filtrar tipos de tarjeta disponibles en función de las tarjetas ya solicitadas
     if (client) {
       const maxColorsPerType = 3; // Máximo número de tarjetas por tipo
       const cardTypes = ['DEBIT', 'CREDIT'];
-      
+
       // Verificar cuántas tarjetas de cada tipo y color tiene el cliente
       const cardTypeAvailability = cardTypes.reduce((acc, type) => {
         const colorsOwned = client.cards.filter(card => card.type === type).length;
@@ -55,7 +55,7 @@ function NewCardData() {
         }
         return acc;
       }, []);
-      
+
       setAvailableCardTypes(cardTypeAvailability);
 
       // Si el tipo de tarjeta seleccionado ya no está disponible, resetear el tipo seleccionado
@@ -90,15 +90,14 @@ function NewCardData() {
       return;
     }
 
-    // Despachar la acción para solicitar la nueva tarjeta
-    dispatch(requestNewCardAction({ 
-      type: formData.cardType, 
-      color: formData.cardColor 
+    // Después de solicitar la nueva tarjeta
+    dispatch(requestNewCardAction({
+      type: formData.cardType,
+      color: formData.cardColor
     })).then((result) => {
       if (result.meta.requestStatus === 'fulfilled') {
-        // Volver a cargar los datos del cliente después de crear la tarjeta
+        // Volver a cargar los datos del cliente
         dispatch(loadCurrentUserAction()).then(() => {
-          // Mostrar mensaje de confirmación y redirigir a la página de tarjetas
           Swal.fire({
             title: 'Card Requested',
             text: 'Your card has been requested successfully!',
@@ -110,6 +109,7 @@ function NewCardData() {
         });
       }
     });
+
   };
 
   const validateForm = () => {
@@ -139,10 +139,10 @@ function NewCardData() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full p-4">
       <div className="flex flex-col md:flex-row items-center justify-center w-[90%] bg-white p-4 rounded-lg shadow-2xl gap-4">
-        <img 
-          className="w-full sm:w-1/2 h-auto object-cover mb-4 sm:mb-0 rounded-md" 
-          src="newCard.png" 
-          alt="newCard" 
+        <img
+          className="w-full sm:w-1/2 h-auto object-cover mb-4 sm:mb-0 rounded-md"
+          src="newCard.png"
+          alt="newCard"
         />
         <form onSubmit={handleSubmit} className="flex flex-col items-center sm:items-start w-full sm:w-1/2 gap-4">
           <div className="w-full">

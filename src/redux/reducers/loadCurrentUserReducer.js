@@ -1,10 +1,10 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { loadCurrentUserAction } from '../actions/loadCurrentUserAction';
 import { createTransactionAction } from '../actions/transactionActions';
-import { requestNewCardAction } from '../actions/cardActions';
+import { requestNewCardAction } from '../actions/cardActions'; // Importar la acción de solicitud de tarjeta
 
 const initialState = {
-  client: null, // Asegúrate de inicializar correctamente el estado
+  client: null,
   status: "idle",
   error: null,
 };
@@ -12,6 +12,7 @@ const initialState = {
 const loadCurrentUserReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(loadCurrentUserAction.fulfilled, (state, action) => {
+      console.log("Datos del cliente logueado recibidos:", action.payload);
       state.client = action.payload;
       state.status = "success";
     })
@@ -23,6 +24,7 @@ const loadCurrentUserReducer = createReducer(initialState, (builder) => {
       state.error = action.payload;
     })
     .addCase(createTransactionAction.fulfilled, (state, action) => {
+      console.log("Nueva transacción creada:", action.payload);
       if (state.client) {
         const account = state.client.accounts.find(acc => acc.number === action.payload.originAccountNumber);
         if (account) {
@@ -32,10 +34,15 @@ const loadCurrentUserReducer = createReducer(initialState, (builder) => {
       }
     })
     .addCase(requestNewCardAction.fulfilled, (state, action) => {
-      if (state.client) {
-        state.client.cards.push(action.payload); // Agregar la nueva tarjeta a la lista de tarjetas del cliente
+      const { payload } = action;
+      if (payload && payload.number && payload.cvv && payload.fromDate && payload.thruDate) {
+        console.log("Nueva tarjeta creada:", action.payload);
+        if (state.client) {
+          state.client.cards.push(payload); // Agregar la nueva tarjeta a la lista de tarjetas del cliente
+        }
       }
-    });
+    })
+    
 });
 
 export default loadCurrentUserReducer;

@@ -25,6 +25,7 @@ function CardsData() {
       dispatch(loadCurrentUserAction());
     }
   }, [dispatch, status]);
+  
 
   const handleCardTypeChange = (event) => {
     setSelectedCardType(event.target.value);

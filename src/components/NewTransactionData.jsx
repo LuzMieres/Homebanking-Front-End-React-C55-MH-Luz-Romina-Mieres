@@ -228,7 +228,7 @@ function NewTransactionData() {
           amount: numericAmount, // Enviar el valor numérico correctamente formateado
         };
   
-        axios.post("https://homebanking-c55-mh-java-luz-romina-mieres.onrender.com/api/transactions/", newTransaction, {
+        axios.post("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/transactions/", newTransaction, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
