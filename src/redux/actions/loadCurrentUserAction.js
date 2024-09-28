@@ -1,4 +1,3 @@
-// clientAction.js
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -11,14 +10,16 @@ export const loadCurrentUserAction = createAsyncThunk(
       return rejectWithValue("No token available");
     }
 
-    // Determinar la URL base de la API según el entorno
-    
     try {
       const response = await axios.get(`https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/current`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      // Imprime la respuesta para verificar su estructura
+      console.log("Datos del cliente logueado recibidos:", response.data);
+
       return response.data;
     } catch (error) {
       console.error("Error al obtener los datos del cliente logueado:", error.response?.data || error.message);
@@ -26,6 +27,5 @@ export const loadCurrentUserAction = createAsyncThunk(
         error.response ? error.response.data : "Unknown error"
       );
     }
-    
   }
 );

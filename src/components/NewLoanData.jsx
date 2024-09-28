@@ -27,13 +27,14 @@ const availableLoans = [
   },
 ];
 
-function NewLoanData() {
+const NewLoanData = () => {
   const [formData, setFormData] = useState({
     name: '',
     sourceAccount: '',
     amount: '',
     payments: '',
   });
+  const [errors, setErrors] = useState({});
   const [rawAmount, setRawAmount] = useState('');
   const [selectedLoan, setSelectedLoan] = useState(null);
   const [amountError, setAmountError] = useState(false);
@@ -41,6 +42,7 @@ function NewLoanData() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { client, status, error } = useSelector((state) => state.currentUser);
+  const { loanRequestStatus, loanRequestError } = useSelector((state) => state.loans); // Asegúrate de tener el estado correcto del reducer
 
   useEffect(() => {
     if (status === 'idle') {
@@ -59,9 +61,9 @@ function NewLoanData() {
   }, [error]);
 
   useEffect(() => {
-    const isValid = formData.name && formData.sourceAccount && rawAmount && formData.payments && !amountError;
+    const isValid = formData.name && formData.sourceAccount && rawAmount && formData.payments && !amountError && Object.keys(errors).length === 0;
     setIsFormValid(isValid);
-  }, [formData, rawAmount, amountError]);
+  }, [formData, rawAmount, amountError, errors]);
 
   function handleLoanChange(event) {
     const selectedName = event.target.value;
@@ -70,11 +72,15 @@ function NewLoanData() {
     setFormData(prevState => ({
       ...prevState,
       name: selectedName,
-      payments: loan ? loan.payments[0] : '',
+      payments: '', // Resetea el valor de payments
       amount: '',
     }));
     setRawAmount('');
     setAmountError(false);
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      name: loan ? '' : 'Please select an loan type.',
+    }));
   }
 
   function handleAccountChange(event) {
@@ -82,6 +88,10 @@ function NewLoanData() {
     setFormData(prevState => ({
       ...prevState,
       sourceAccount: selectedAccount,
+    }));
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      sourceAccount: selectedAccount ? '' : 'Please select an account.',
     }));
   }
 
@@ -97,9 +107,29 @@ function NewLoanData() {
 
     if (selectedLoan && numericAmount > selectedLoan.maxAmount) {
       setAmountError(true);
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        amount: `Amount cannot exceed ${formatAmountToARS(selectedLoan.maxAmount)}.`,
+      }));
     } else {
       setAmountError(false);
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        amount: numericAmount > 0 ? '' : 'Please enter a valid amount.',
+      }));
     }
+  }
+
+  function handlePaymentsChange(event) {
+    const selectedPayments = event.target.value;
+    setFormData(prevState => ({
+      ...prevState,
+      payments: selectedPayments,
+    }));
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      payments: selectedPayments ? '' : 'Please select a payment.',
+    }));
   }
 
   function handleAmountBlur() {
@@ -124,14 +154,6 @@ function NewLoanData() {
     return amount + (amount * interestRate / 100);
   }
 
-  function handlePaymentsChange(event) {
-    const selectedPayments = event.target.value;
-    setFormData(prevState => ({
-      ...prevState,
-      payments: selectedPayments,
-    }));
-  }
-
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -139,7 +161,7 @@ function NewLoanData() {
       Swal.fire({
         icon: 'warning',
         title: 'Incomplete Form',
-        text: 'Please fill in all required fields.',
+        text: 'Please fill in all required fields correctly.',
       });
       return;
     }
@@ -164,29 +186,53 @@ function NewLoanData() {
       destinationAccountNumber: formData.sourceAccount,
     };
 
-    dispatch(requestNewLoanAction(newLoan)).then((result) => {
-      if (result.meta.requestStatus === 'fulfilled') {
-        dispatch(loadCurrentUserAction()).then(() => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Loan Requested',
-            text: `Your loan request has been successfully submitted for an amount of ${formatAmountToARS(rawAmountValue)}.`,
-            timer: 1500,
-            showConfirmButton: false,
-          });
-          setTimeout(() => {
-            navigate('/loans');
-          }, 1500);
-        });
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'An error occurred while requesting the loan. Please try again later.',
-        });
+    // Mostrar confirmación antes de enviar la solicitud
+    Swal.fire({
+      title: 'Confirm Loan Request',
+      html: `
+        <strong>Loan Type:</strong> ${formData.name} <br/>
+        <strong>Amount:</strong> ${formatAmountToARS(rawAmountValue)} <br/>
+        <strong>Payments:</strong> ${formData.payments} <br/>
+        <strong>Total with Interest:</strong> ${formatAmountToARS(totalWithInterest)}
+      `,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('User confirmed the loan request'); // Verificar si la confirmación fue recibida
+        dispatch(requestNewLoanAction(newLoan));
       }
     });
   }
+
+  // Manejar cambios de estado de la solicitud de préstamo
+  useEffect(() => {
+    if (loanRequestStatus === 'fulfilled') {
+      console.log('Loan request completed successfully');
+      // Cargar nuevamente la información del cliente antes de redirigir
+      dispatch(loadCurrentUserAction()).then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Loan Requested',
+          text: `Your loan request has been successfully submitted for an amount of ${formatAmountToARS(rawAmount)}.`,
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        setTimeout(() => {
+          navigate('/loans'); // Navega a la página de préstamos
+        }, 1500);
+      });
+    } else if (loanRequestStatus === 'rejected') {
+      console.log('Loan request failed:', loanRequestError);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: loanRequestError || 'An error occurred while requesting the loan. Please try again later.',
+      });
+    }
+  }, [loanRequestStatus, loanRequestError, dispatch, navigate, rawAmount]);
 
   if (!client) {
     return <div className="text-center text-gray-600">Loading...</div>;
@@ -200,7 +246,7 @@ function NewLoanData() {
           <div className="form-group">
             <label className="form-label" htmlFor="loanType">Select Loan Type</label>
             <select
-              className="form-select border p-2 rounded"
+              className={`form-select border p-2 rounded ${!formData.name ? 'disabled' : ''}`}
               id="loanType"
               name="name"
               value={formData.name}
@@ -211,18 +257,21 @@ function NewLoanData() {
                 <option key={loan.name} value={loan.name}>{loan.name}</option>
               ))}
             </select>
+            {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
           </div>
           <div className="form-group">
             <label className="form-label" htmlFor="amount">Amount</label>
             <input
-              className={`form-input border p-2 rounded ${amountError ? 'border-red-500' : ''}`}
+              className={`form-input border p-2 rounded ${amountError ? 'border-red-500' : ''} ${!selectedLoan ? 'disabled' : ''}`}
               type="text"
               id="amount"
               name="amount"
               value={formData.amount}
               onChange={handleAmountChange}
               onBlur={handleAmountBlur}
+              disabled={!selectedLoan}
             />
+            {errors.amount && <p className="text-red-500 text-xs">{errors.amount}</p>}
             {selectedLoan && (
               <p className={`amount-info ${amountError ? 'text-red-500' : 'text-gray-500'}`}>
                 Max amount: {formatAmountToARS(selectedLoan.maxAmount)}
@@ -232,12 +281,14 @@ function NewLoanData() {
           <div className="form-group">
             <label className="form-label" htmlFor="payments">Select Payments</label>
             <select
-              className="form-select border p-2 rounded"
+              className={`form-select border p-2 rounded ${!formData.amount ? 'disabled' : ''}`}
               id="payments"
               name="payments"
               value={formData.payments}
               onChange={handlePaymentsChange}
+              disabled={!formData.amount}
             >
+              <option value="" disabled>Select payment</option>
               {selectedLoan ? (
                 selectedLoan.payments.map((payments, index) => (
                   <option key={index} value={payments}>{payments} payments</option>
@@ -246,21 +297,24 @@ function NewLoanData() {
                 <option value="" disabled>Select a loan first</option>
               )}
             </select>
+            {errors.payments && <p className="text-red-500 text-xs">{errors.payments}</p>}
           </div>
           <div className="form-group">
             <label className="form-label" htmlFor="sourceAccount">Select Account</label>
             <select
-              className="form-select border p-2 rounded"
+              className={`form-select border p-2 rounded ${!formData.payments ? 'disabled' : ''}`}
               id="sourceAccount"
               name="sourceAccount"
               value={formData.sourceAccount}
               onChange={handleAccountChange}
+              disabled={!formData.payments}
             >
               <option value="" disabled>Select an account</option>
               {client.accounts.map(account => (
                 <option key={account.id} value={account.number}>{account.number}</option>
               ))}
             </select>
+            {errors.sourceAccount && <p className="text-red-500 text-xs">{errors.sourceAccount}</p>}
           </div>
           <button
             type="submit"

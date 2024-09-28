@@ -9,65 +9,66 @@ import axios from 'axios';
 function LoginData() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({}); 
-  const [showPassword, setShowPassword] = useState(false); 
+  const [errors, setErrors] = useState({});
+  const [passwordErrors, setPasswordErrors] = useState([]); // Lista de errores de la contraseña
+  const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // Validación de la contraseña
   const validatePassword = (password) => {
-    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={}[\]|\\:;"'<>,.?/~`]).{8,}$/;
-    if (!regex.test(password)) {
-      return "Password must be at least 8 characters long, include an uppercase letter, a number, and a special character.";
+    const errors = [];
+
+    if (password.length < 8) {
+      errors.push("Password must be at least 8 characters long.");
     }
-    return null;
+    if (!/[A-Z]/.test(password)) {
+      errors.push("Password must contain at least one uppercase letter.");
+    }
+    if (!/[a-z]/.test(password)) {
+      errors.push("Password must contain at least one lowercase letter.");
+    }
+    if (!/\d/.test(password)) {
+      errors.push("Password must contain at least one number.");
+    }
+    if (!/[!@#$%^&*()_\-+={}[\]|\\:;"'<>,.?/~`]/.test(password)) {
+      errors.push("Password must contain at least one special character.");
+    }
+
+    return errors;
   };
+
+  // Validación en tiempo real para la contraseña
+  useEffect(() => {
+    setPasswordErrors(validatePassword(password));
+  }, [password]);
 
   const alertError = (msg) => {
     Swal.fire({
-      title: "Oops! Something Went Wrong",
+      title: "Login Error",
       text: msg,
       icon: "error",
     });
   };
 
-  const alertSuccess = (msg) => {
-    Swal.fire({
-      title: "Success",
-      text: msg,
-      icon: "success",
-    });
-  };
-
-  // Validación en tiempo real para el formulario de login
-  useEffect(() => {
-    const emailError = email === "" ? "Email is required." : null;
-    const passwordError = validatePassword(password);
-    setErrors({ email: emailError, password: passwordError });
-  }, [email, password]);
-
-  // Cargar datos de login si existen en localStorage
-  useEffect(() => {
-    const loginData = JSON.parse(localStorage.getItem('loginData'));
-    if (loginData) {
-      setEmail(loginData.email);
-      setPassword(loginData.password);
-      localStorage.removeItem('loginData'); // Limpiar los datos después de usarlos
-    }
-  }, []);
-
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (errors.email || errors.password) {
-      alertError("Please fix the errors before submitting.");
-      return;
-    }
 
+    // Realizar la petición al backend sin importar las validaciones previas
     const user = { email, password };
 
     try {
-      const res = await axios.post("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/login", user);
+      const res = await axios.post(
+        "https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/login",
+        user,
+        {
+          headers: {
+            'Content-Type': 'application/json' // Asegúrate de enviar el encabezado correcto
+          }
+        }
+      );
+      
       // Guardar el token en localStorage
       if (res.data) {
         localStorage.setItem("token", res.data);
@@ -78,7 +79,7 @@ function LoginData() {
           title: "Login Successful",
           text: "Redirecting to your account...",
           icon: "success",
-          timer: 5000, // 5 segundos
+          timer: 3000, // 3 segundos
           timerProgressBar: true,
           showConfirmButton: false
         }).then(() => {
@@ -86,22 +87,39 @@ function LoginData() {
           dispatch(loadCurrentUserAction());
           navigate("/accounts/");
         });
-
       } else {
         alertError("Login failed: No token received");
       }
     } catch (err) {
       console.error("Error during login:", err);
+
       if (err.response) {
-        alertError(err.response.data);
+        const statusCode = err.response.status;
+        const errorMessage = err.response.data;
+
+        // Manejar errores específicos del backend
+        if (statusCode === 403 || statusCode === 401) {
+          if (errorMessage === "Email not registered") {
+            alertError("The user is not registered.");
+          } else if (errorMessage === "Incorrect password") {
+            alertError("Incorrect password.");
+          } else {
+            // Mostrar el mensaje exacto recibido del backend si es distinto
+            alertError("Invalid credentials. Please check your username and password.");
+          }
+        } else {
+          // Mostrar el mensaje exacto recibido del backend si es distinto
+          alertError("Unexpected error. Please try again later.");
+        }
       } else {
-        alertError("An error occurred during login.");
+        // Si no hay respuesta del backend, mostrar un mensaje genérico de error
+        alertError("An error occurred during login. Please try again later.");
       }
     }
   };
 
   // Verificar si el formulario de login es válido
-  const isFormValid = email && password && !errors.email && !errors.password;
+  const isFormValid = email && password && !errors.email && passwordErrors.length === 0;
 
   return (
     <div className='flex flex-col sm:flex-row justify-center items-center w-full min-h-screen'>
@@ -131,7 +149,7 @@ function LoginData() {
               <p className='text-gray-700 text-lg sm:text-2xl'>Password</p>
               <div className='relative'>
                 <input
-                  className={`w-full bg-gray-200 text-black text-lg sm:text-2xl p-2 rounded ${errors.password ? 'border border-red-500' : ''}`}
+                  className={`w-full bg-gray-200 text-black text-lg sm:text-2xl p-2 rounded ${passwordErrors.length > 0 ? 'border border-red-500' : ''}`}
                   type={showPassword ? "text" : "password"}
                   name="password"
                   id="password"
@@ -151,7 +169,13 @@ function LoginData() {
                 </button>
               </div>
             </label>
-            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+            {passwordErrors.length > 0 && (
+              <ul className="text-red-500 text-sm mt-1 list-disc ml-5">
+                {passwordErrors.map((error, index) => (
+                  <li key={index}>{error}</li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
         <div className='flex flex-col justify-center items-center gap-2'>
@@ -164,14 +188,6 @@ function LoginData() {
           </button>
           <p className='text-gray-700 text-lg sm:text-xl'>O</p>
           <Link className='text-lg sm:text-[25px] text-blue-800 hover:text-blue-600' to="/register">Register</Link>
-          {/* Botón para mostrar el formulario de cambio de contraseña */}
-          <button
-            type="button"
-            onClick={() => setShowChangePasswordForm(!showChangePasswordForm)}
-            className="text-lg sm:text-[20px] text-blue-800 hover:text-blue-600"
-          >
-            Change Password
-          </button>
         </div>
       </form>
     </div>

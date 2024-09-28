@@ -15,17 +15,37 @@ function RegisterData() {
     password: '',
   });
   const [error, setError] = useState({});
+  const [passwordErrors, setPasswordErrors] = useState([]); // Lista de errores de la contraseña
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   // Validación de la contraseña
   const validatePassword = (password) => {
-    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={}[\]|\\:;"'<>,.?/~`]).{8,}$/;
-    if (!regex.test(password)) {
-      return "Password must be at least 8 characters long, include an uppercase letter, a number, and a special character.";
+    const errors = [];
+
+    if (password.length < 8) {
+      errors.push("Password must be at least 8 characters long.");
     }
-    return null;
+    if (!/[A-Z]/.test(password)) {
+      errors.push("Password must contain at least one uppercase letter.");
+    }
+    if (!/[a-z]/.test(password)) {
+      errors.push("Password must contain at least one lowercase letter.");
+    }
+    if (!/\d/.test(password)) {
+      errors.push("Password must contain at least one number.");
+    }
+    if (!/[!@#$%^&*()_\-+={}[\]|\\:;"'<>,.?/~`]/.test(password)) {
+      errors.push("Password must contain at least one special character.");
+    }
+
+    return errors;
   };
+
+  // Validación en tiempo real para la contraseña
+  useEffect(() => {
+    setPasswordErrors(validatePassword(formData.password));
+  }, [formData.password]);
 
   function validateField(name, value) {
     let error = '';
@@ -41,14 +61,11 @@ function RegisterData() {
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
         error = 'Email is invalid.';
       }
-    } else if (name === 'password') {
-      const passwordError = validatePassword(value);
-      if (passwordError) error = passwordError;
     }
 
     setError(prevErrors => ({
       ...prevErrors,
-      [name]: error, // Cambio de [name.toLowerCase()] a [name] para asegurar que el error se asigne correctamente.
+      [name]: error,
     }));
 
     return error === '';
@@ -78,7 +95,7 @@ function RegisterData() {
     const isNameValid = validateField('name', name);
     const isLastNameValid = validateField('lastName', lastName); // Asegúrate de pasar 'lastName' aquí
     const isEmailValid = validateField('email', email);
-    const isPasswordValid = validateField('password', password);
+    const isPasswordValid = passwordErrors.length === 0;
 
     return isNameValid && isLastNameValid && isEmailValid && isPasswordValid;
   }
@@ -114,12 +131,22 @@ function RegisterData() {
       })
       .catch(error => {
         console.error("There was a problem with the request:", error);
-        setError({ form: 'There was a problem creating your account.' });
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'There was a problem creating your account.',
-        });
+        // Asignar los mensajes de error específicos del backend a los campos correspondientes
+        if (error.response && error.response.data) {
+          setError(prevErrors => ({
+            ...prevErrors,
+            name: error.response.data.includes('First name') ? error.response.data : '',
+            lastName: error.response.data.includes('Last name') ? error.response.data : '',
+            email: error.response.data.includes('Email') ? error.response.data : '',
+            password: error.response.data.includes('Password') ? error.response.data : '',
+          }));
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Email already in use.',
+          });
+        }
       });
   }
 
@@ -129,7 +156,7 @@ function RegisterData() {
   }, [formData]);
 
   // Verificar si el formulario es válido
-  const isFormValid = formData.name && formData.lastName && formData.email && formData.password && !error.name && !error.lastName && !error.email && !error.password;
+  const isFormValid = formData.name && formData.lastName && formData.email && formData.password && !error.name && !error.lastName && !error.email && passwordErrors.length === 0;
 
   return (
     <div className='flex flex-col sm:flex-row justify-center items-center w-full min-h-screen'>
@@ -187,7 +214,7 @@ function RegisterData() {
               <p className='text-gray-700 text-lg sm:text-2xl'>Password</p>
               <div className='relative'>
                 <input
-                  className={`w-full bg-gray-200 text-black text-lg sm:text-2xl p-2 rounded ${error?.password ? 'border-red-500' : ''}`}
+                  className={`w-full bg-gray-200 text-black text-lg sm:text-2xl p-2 rounded ${passwordErrors.length > 0 ? 'border-red-500' : ''}`}
                   type={showPassword ? "text" : "password"}
                   name="password"
                   id="password"
@@ -214,7 +241,13 @@ function RegisterData() {
                   )}
                 </button>
               </div>
-              {error?.password && <p className="text-red-500 text-sm">{error.password}</p>}
+              {passwordErrors.length > 0 && (
+                <ul className="text-red-500 text-sm mt-1 list-disc ml-5">
+                  {passwordErrors.map((error, index) => (
+                    <li key={index}>{error}</li>
+                  ))}
+                </ul>
+              )}
             </label>
           </div>
         </div>

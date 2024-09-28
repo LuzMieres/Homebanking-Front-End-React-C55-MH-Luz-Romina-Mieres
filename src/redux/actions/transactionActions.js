@@ -35,7 +35,7 @@ export const createTransactionAction = createAsyncThunk(
 
       // Enviar la solicitud de transacción
       const response = await axios.post(
-        `$https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/transactions/clients/current/transactions`, // Corrige la URL
+        `$https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/transactions/`, // Corrige la URL
         {
           sourceAccount,
           destinationAccount,

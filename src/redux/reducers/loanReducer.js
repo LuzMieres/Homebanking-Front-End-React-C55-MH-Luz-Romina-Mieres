@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { requestNewLoanAction,  loadAvailableLoans } from '../actions/loanActions';
+import { requestNewLoanAction } from '../actions/loanActions';
 import { loadCurrentUserAction } from '../actions/loadCurrentUserAction';
 
 const initialState = {
@@ -14,28 +14,16 @@ const loanReducer = createReducer(initialState, (builder) => {
       state.status = "loading";
     })
     .addCase(requestNewLoanAction.fulfilled, (state, action) => {
-      state.loans.push(action.payload); // Agrega el nuevo préstamo a la lista de préstamos
+      // No necesitamos hacer push porque los loans se actualizan con loadCurrentUserAction
       state.status = "succeeded";
     })
     .addCase(requestNewLoanAction.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.payload; // Maneja los errores
     })
-    .addCase( loadAvailableLoans.pending, (state) => {
-      state.status = "loading";
-    })
-    .addCase( loadAvailableLoans.fulfilled, (state, action) => {
-      state.loans = action.payload; // Actualiza la lista de préstamos del cliente
-      state.status = "succeeded";
-    })
-    .addCase( loadAvailableLoans.rejected, (state, action) => {
-      state.status = "failed";
-      state.error = action.payload;
-    })
     .addCase(loadCurrentUserAction.fulfilled, (state, action) => {
       state.loans = action.payload.loans || []; // Asegúrate de que sea un array
     });
-    
 });
 
 export default loanReducer;
