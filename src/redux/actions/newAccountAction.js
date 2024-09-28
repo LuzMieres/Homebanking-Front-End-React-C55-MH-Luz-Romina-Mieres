@@ -13,7 +13,7 @@ export const newAccountAction = (accountType) => async (dispatch) => {
 
     // Realizar la solicitud para crear una nueva cuenta
     const response = await axios.post(
-      `$https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/clients/current/accounts`, // URL corregida con backticks
+      `$https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/accounts/clients/current/accounts`, // URL corregida con backticks
       {
         type: accountType // Datos a enviar en el cuerpo de la solicitud
       },
