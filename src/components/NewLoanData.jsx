@@ -67,8 +67,7 @@ const NewLoanData = () => {
     const isValid = formData.name && formData.sourceAccount && rawAmount && formData.payments && formData.description && !amountError && Object.keys(errors).length === 0;
     setIsFormValid(isValid);
   }, [formData, rawAmount, amountError, errors]);
-
-
+  
   function handleLoanChange(event) {
     const selectedName = event.target.value;
     const loan = availableLoans.find(l => l.name === selectedName);
@@ -103,13 +102,14 @@ const NewLoanData = () => {
     const description = event.target.value;
     setFormData(prevState => ({
       ...prevState,
-      description,
+      description, // Actualizar el estado con la nueva descripción
     }));
     setErrors(prevErrors => ({
       ...prevErrors,
       description: description ? '' : 'Please enter a description.',
     }));
   }
+
 
 
   function handleAmountChange(event) {
@@ -173,7 +173,7 @@ const NewLoanData = () => {
 
   function handleSubmit(event) {
     event.preventDefault();
-
+  
     if (!isFormValid) {
       Swal.fire({
         icon: 'warning',
@@ -182,7 +182,7 @@ const NewLoanData = () => {
       });
       return;
     }
-
+  
     if (amountError) {
       Swal.fire({
         icon: 'error',
@@ -191,20 +191,19 @@ const NewLoanData = () => {
       });
       return;
     }
-
+  
     const rawAmountValue = parseFloat(rawAmount);
     const totalWithInterest = calculateTotalWithInterest(rawAmountValue, selectedLoan.interestRate);
-
+  
     const newLoan = {
       loanName: formData.name,
       amount: rawAmountValue,
       totalAmount: totalWithInterest,
       payments: formData.payments,
       destinationAccountNumber: formData.sourceAccount,
-      description: formData.description, // Incluir la descripción en la solicitud
+      description: formData.description, // Asegúrate de que la descripción esté incluida
     };
-    
-
+  
     Swal.fire({
       title: 'Confirm Loan Request',
       html: `
@@ -220,12 +219,13 @@ const NewLoanData = () => {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log('User confirmed the loan request');
         dispatch(requestNewLoanAction(newLoan));
       }
+      console.log('Form Data:', formData); // Agrega esto antes de enviar el formulario
+s
     });
   }
-
+  
   // Manejar cambios de estado de la solicitud de préstamo
   useEffect(() => {
     if (loanRequestStatus === 'fulfilled') {
@@ -342,13 +342,12 @@ const NewLoanData = () => {
               type="text"
               id="description"
               name="description"
-              value={formData.description}
-              onChange={handleDescriptionChange}
+              value={formData.description} // Vincular el valor del input con el estado formData
+              onChange={handleDescriptionChange} // Vincular el evento onChange
               placeholder="Enter a description"
             />
             {errors.description && <p className="text-red-500 text-xs">{errors.description}</p>}
           </div>
-
           <button
             type="submit"
             className={`submit-button bg-blue-800 text-white p-2 rounded ${!isFormValid ? 'bg-gray-400 cursor-not-allowed' : 'hover:bg-blue-600 transition-colors duration-300'}`}
