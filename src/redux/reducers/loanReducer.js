@@ -3,10 +3,11 @@ import { requestNewLoanAction, loadClientLoans } from '../actions/loanActions';
 import { loadCurrentUserAction } from '../actions/loadCurrentUserAction';
 
 const initialState = {
-  loans: [], // Lista de préstamos del cliente
-  status: "idle",
+  loans: [],
+  status: "idle", // Asegúrate de que el estado inicial esté configurado correctamente
   error: null,
 };
+
 
 const loanReducer = createReducer(initialState, (builder) => {
   builder
@@ -25,10 +26,10 @@ const loanReducer = createReducer(initialState, (builder) => {
       state.status = "loading";
     })
     .addCase(loadClientLoans.fulfilled, (state, action) => {
-      console.log("Préstamos recibidos:", action.payload); // Añade un log aquí para verificar los datos recibidos
+      console.log("Préstamos recibidos en el reducer:", action.payload); // Verifica el contenido de los préstamos recibidos
       state.loans = action.payload;
       state.status = "succeeded";
-    })
+    })    
     .addCase(loadClientLoans.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.payload;

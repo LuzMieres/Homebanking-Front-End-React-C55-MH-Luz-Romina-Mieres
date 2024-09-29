@@ -17,7 +17,7 @@ function Footer({ className = "" }) {
           </a>
           <p className="footer-text">MindHub - CoHort 55</p>
         </div>
-        <div className="footer-icons md:flex md:flex-row lg:flex lg:flex-row xl:flex xl:flex-row 2xl:flex 2xl:flex-row">
+        <div className="footer-icons flex md:flex md:flex-row lg:flex lg:flex-row xl:flex xl:flex-row 2xl:flex 2xl:flex-row">
           <a
             href="https://www.facebook.com/"
             target="_blank" // Abrir en una nueva ventana

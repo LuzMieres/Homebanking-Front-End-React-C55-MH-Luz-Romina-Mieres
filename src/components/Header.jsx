@@ -54,19 +54,9 @@ function Header() {
         >
           {showNav ? "X" : "≡"}
         </button>
-      </header>
-
       {/* Navegación, mostrar u ocultar basado en el estado showNav */}
       <nav className={`nav ${showNav ? 'show' : ''}`}>
         <ul className='nav-links gap-2 md:gap-3 lg:gap-5 xl:gap-10 2xl:gap-10'>
-          <button
-            onClick={() => navigate(-1)}
-            className="back-button"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-              <path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z" />
-            </svg>
-          </button>
           <li>
             <NavLink
               to='/accounts'
@@ -101,7 +91,8 @@ function Header() {
           </li>
         </ul>
         {/* Añadir una clase wrapper y mover el botón de logout fuera de la lista de navegación */}
-        <div className="logout-wrapper">
+      </nav>
+      <div className="logout-wrapper">
           <button
             onClick={handleLogout}
             className="logout-button"
@@ -111,8 +102,7 @@ function Header() {
             </svg>
           </button>
         </div>
-      </nav>
-
+      </header>
     </>
   );
 }

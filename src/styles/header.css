@@ -29,7 +29,6 @@
     font-size: 2.5rem; /* text-[50px] */
   }
   
-  /* === Estilos de Navegación === */
   .nav {
     display: flex;
     flex-direction: column;
@@ -65,11 +64,32 @@
     color: #ffffff;
     text-decoration: none;
     font-size: 1.5rem;
+    position: relative; /* Para el efecto de línea */
     transition: color 0.3s ease;
   }
   
-  .nav-link:hover, .active-link {
-    color: #00b2ff; /* Azul claro */
+  .nav-link::after, .active-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px; /* Ajusta la posición vertical de la línea */
+    left: 0;
+    width: 0;
+    height: 2px; /* Altura de la línea */
+    background-color: white;
+    transition: width 0.3s ease;
+
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  
+  .active-link {
+    color: white;
+  }
+  
+  .active-link::after {
+    width: 100%; /* Mantener la línea blanca en el enlace activo */
   }
   
   @media (min-width: 768px) {
@@ -81,7 +101,7 @@
       position: static; /* Posicionamiento estático */
       flex-direction: row; /* Menú en fila */
       width: auto;
-      height: auto;
+      height: 15vh;
       transition: none;
       box-shadow: none;
     }

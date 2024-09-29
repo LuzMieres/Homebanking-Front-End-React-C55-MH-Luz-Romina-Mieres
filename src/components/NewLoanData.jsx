@@ -28,13 +28,11 @@ const availableLoans = [
 ];
 
 const NewLoanData = () => {
-  // Los hooks deben estar dentro del componente funcional
   const [formData, setFormData] = useState({
     name: '',
     sourceAccount: '',
     amount: '',
     payments: '',
-    description: '', // Añadir descripción al estado inicial
   });
 
   const [errors, setErrors] = useState({});
@@ -45,7 +43,7 @@ const NewLoanData = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { client, status, error } = useSelector((state) => state.currentUser);
-  const { loanRequestStatus, loanRequestError } = useSelector((state) => state.loans); // Asegúrate de tener el estado correcto del reducer
+  const { loanRequestStatus, loanRequestError } = useSelector((state) => state.loans);
 
   useEffect(() => {
     if (status === 'idle') {
@@ -64,7 +62,7 @@ const NewLoanData = () => {
   }, [error]);
 
   useEffect(() => {
-    const isValid = formData.name && formData.sourceAccount && rawAmount && formData.payments && formData.description && !amountError && Object.keys(errors).length === 0;
+    const isValid = formData.name && formData.sourceAccount && rawAmount && formData.payments && !amountError && Object.keys(errors).length === 0;
     setIsFormValid(isValid);
   }, [formData, rawAmount, amountError, errors]);
   
@@ -75,14 +73,14 @@ const NewLoanData = () => {
     setFormData(prevState => ({
       ...prevState,
       name: selectedName,
-      payments: '', // Resetea el valor de payments
+      payments: '',
       amount: '',
     }));
     setRawAmount('');
     setAmountError(false);
     setErrors(prevErrors => ({
       ...prevErrors,
-      name: loan ? '' : 'Please select an loan type.',
+      name: loan ? '' : 'Please select a loan type.',
     }));
   }
 
@@ -97,20 +95,6 @@ const NewLoanData = () => {
       sourceAccount: selectedAccount ? '' : 'Please select an account.',
     }));
   }
-
-  function handleDescriptionChange(event) {
-    const description = event.target.value;
-    setFormData(prevState => ({
-      ...prevState,
-      description, // Actualizar el estado con la nueva descripción
-    }));
-    setErrors(prevErrors => ({
-      ...prevErrors,
-      description: description ? '' : 'Please enter a description.',
-    }));
-  }
-
-
 
   function handleAmountChange(event) {
     let enteredAmount = event.target.value.replace(/[^0-9]/g, '');
@@ -201,7 +185,6 @@ const NewLoanData = () => {
       totalAmount: totalWithInterest,
       payments: formData.payments,
       destinationAccountNumber: formData.sourceAccount,
-      description: formData.description, // Asegúrate de que la descripción esté incluida
     };
   
     Swal.fire({
@@ -211,7 +194,6 @@ const NewLoanData = () => {
         <strong>Amount:</strong> ${formatAmountToARS(rawAmountValue)} <br/>
         <strong>Payments:</strong> ${formData.payments} <br/>
         <strong>Total with Interest:</strong> ${formatAmountToARS(totalWithInterest)} <br/>
-        <strong>Description:</strong> ${formData.description} <br/>
       `,
       icon: 'info',
       showCancelButton: true,
@@ -221,16 +203,12 @@ const NewLoanData = () => {
       if (result.isConfirmed) {
         dispatch(requestNewLoanAction(newLoan));
       }
-      console.log('Form Data:', formData); // Agrega esto antes de enviar el formulario
-s
     });
   }
   
-  // Manejar cambios de estado de la solicitud de préstamo
   useEffect(() => {
     if (loanRequestStatus === 'fulfilled') {
       console.log('Loan request completed successfully');
-      // Cargar nuevamente la información del cliente antes de redirigir
       dispatch(loadCurrentUserAction()).then(() => {
         Swal.fire({
           icon: 'success',
@@ -240,7 +218,7 @@ s
           showConfirmButton: false,
         });
         setTimeout(() => {
-          navigate('/loans'); // Navega a la página de préstamos
+          navigate('/loans');
         }, 1500);
       });
     } else if (loanRequestStatus === 'rejected') {
@@ -334,19 +312,6 @@ s
               ))}
             </select>
             {errors.sourceAccount && <p className="text-red-500 text-xs">{errors.sourceAccount}</p>}
-          </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="description">Description</label>
-            <input
-              className="form-input border p-2 rounded"
-              type="text"
-              id="description"
-              name="description"
-              value={formData.description} // Vincular el valor del input con el estado formData
-              onChange={handleDescriptionChange} // Vincular el evento onChange
-              placeholder="Enter a description"
-            />
-            {errors.description && <p className="text-red-500 text-xs">{errors.description}</p>}
           </div>
           <button
             type="submit"

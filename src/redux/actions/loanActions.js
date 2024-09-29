@@ -51,7 +51,6 @@ export const requestNewLoanAction = createAsyncThunk(
   }
 );
 
-
 export const loadClientLoans = createAsyncThunk(
   "loans/loadClientLoans",
   async (_, { rejectWithValue }) => {
@@ -77,4 +76,5 @@ export const loadClientLoans = createAsyncThunk(
     }
   }
 );
+
 

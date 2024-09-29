@@ -15,6 +15,7 @@ function NewTransactionData() {
     sourceAccount: '',
     destinationAccount: '',
     amount: '',
+    description: '', // Nuevo campo para descripción
   });
   const [client, setClient] = useState(null);
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -44,6 +45,22 @@ function NewTransactionData() {
         console.error("There was a problem with the request:", error);
       });
   }
+
+  function updateDescription() {
+    const source = formData.sourceAccount;
+    const destination = formData.destinationAccount;
+    if (source && destination) {
+      setFormData(prevState => ({
+        ...prevState,
+        description: `Transfer from ${source} to ${destination}`,
+      }));
+    }
+  }
+
+  useEffect(() => {
+    updateDescription();
+  }, [formData.sourceAccount, formData.destinationAccount]);
+
 
   function handleAccountTypeChange(event) {
     setFormData({
@@ -93,6 +110,14 @@ function NewTransactionData() {
     }
   }
 
+  function handleDescriptionChange(event) {
+    setFormData(prevState => ({
+      ...prevState,
+      description: event.target.value,
+    }));
+  }
+
+
   function formatAmountToARS(amount) {
     if (typeof amount !== 'number' || isNaN(amount)) {
       return '';
@@ -104,33 +129,33 @@ function NewTransactionData() {
     // Obtener el valor ingresado sin caracteres no numéricos excepto el punto decimal
     let enteredAmount = event.target.value.replace(/[^0-9.]/g, '');
     const numericValue = parseFloat(enteredAmount);
-  
+
     // Actualizar el estado con el valor numérico sin formato
     setFormData(prevState => ({
       ...prevState,
       amount: enteredAmount,
     }));
-  
+
     // Validar si el valor es numérico y mayor a cero
     if (isNaN(numericValue) || numericValue <= 0) {
       setAmountInvalid(true);
       setAmountError(false);
       return;
     }
-  
+
     // Verificar si el monto excede el saldo disponible
     if (selectedAccount && numericValue > selectedAccount.balance) {
       setAmountError(true);
     } else {
       setAmountError(false);
     }
-  
+
     setAmountInvalid(false);
   }
 
   function handleAmountBlur() {
     const numericValue = parseFloat(formData.amount);
-  
+
     if (isNaN(numericValue) || numericValue <= 0) {
       setFormData(prevState => ({
         ...prevState,
@@ -140,7 +165,7 @@ function NewTransactionData() {
       setAmountError(false);
       return;
     }
-  
+
     // No formatear el monto en este punto para evitar confusión.
     // Solo mantener el valor como número sin separadores adicionales.
     setFormData(prevState => ({
@@ -208,6 +233,16 @@ function NewTransactionData() {
       return;
     }
   
+    const newTransaction = {
+      originAccountNumber: formData.sourceAccount,
+      destinationAccountNumber: formData.destinationAccount,
+      amount: numericAmount, // Enviar el valor numérico correctamente formateado
+      description: formData.description, // Enviar la descripción
+    };
+  
+    // Verificar los datos antes de enviarlos
+    console.log("Datos de la nueva transacción:", newTransaction);
+  
     Swal.fire({
       title: 'Confirm Transaction',
       html: `
@@ -215,6 +250,7 @@ function NewTransactionData() {
         <p>Source Account: <strong>${formData.sourceAccount}</strong></p>
         <p>Destination Account: <strong>${formData.destinationAccount}</strong></p>
         <p>Amount: <strong>${formatAmountToARS(numericAmount)}</strong></p>
+        <p>Description: <strong>${formData.description}</strong></p>
       `,
       icon: 'warning',
       showCancelButton: true,
@@ -222,12 +258,6 @@ function NewTransactionData() {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        const newTransaction = {
-          originAccountNumber: formData.sourceAccount,
-          destinationAccountNumber: formData.destinationAccount,
-          amount: numericAmount, // Enviar el valor numérico correctamente formateado
-        };
-  
         axios.post("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/transactions/", newTransaction, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -241,36 +271,15 @@ function NewTransactionData() {
               confirmButtonText: 'OK'
             }).then(() => {
               updateAccountBalances(formData.sourceAccount, formData.destinationAccount, numericAmount);
-  
               dispatch(loadCurrentUserAction());
-  
-              if (formData.accountType === 'Other' && !savedAccounts.includes(formData.destinationAccount)) {
-                Swal.fire({
-                  title: 'Save Contact',
-                  text: `Do you want to save the account ${formData.destinationAccount} in your contacts?`,
-                  icon: 'question',
-                  showCancelButton: true,
-                  confirmButtonText: 'Yes, save it!',
-                  cancelButtonText: 'No, cancel'
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    savedAccounts.push(formData.destinationAccount);
-                    setContactAccounts([...savedAccounts]);
-                    localStorage.setItem('savedAccounts', JSON.stringify(savedAccounts));
-                    Swal.fire('Saved!', `The account ${formData.destinationAccount} has been added to your contacts.`, 'success');
-                  }
-                });
-              }
             });
           })
           .catch(error => {
             if (error.response) {
-              if (error.response.data === "Destination account does not exist") {
-                setDestinationAccountError("The destination account does not exist.");
-              } else {
-                setServerError(error.response.data || "There was a problem with the transaction.");
-              }
+              console.error("Error en la respuesta del servidor:", error.response.data); // Verifica el error detallado
+              setServerError(error.response.data || "There was a problem with the transaction.");
             } else {
+              console.error("Error en la solicitud:", error); // Verifica el error de solicitud
               setServerError("There was a problem with the transaction.");
             }
           });
@@ -278,6 +287,7 @@ function NewTransactionData() {
     });
   }
   
+
   if (!client) {
     return <div className="text-center text-gray-600">Loading...</div>;
   }
@@ -416,7 +426,18 @@ function NewTransactionData() {
               </p>
             )}
           </div>
-
+          <div className="form-group">
+            <label className="form-label" htmlFor="description">Description:</label>
+            <input
+              className="form-input"
+              type="text"
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleDescriptionChange}
+              placeholder="Enter a description"
+            />
+          </div>
           <button
             type="submit"
             className={`submit-button ${!isFormValid ? 'button-disabled' : ''}`}
