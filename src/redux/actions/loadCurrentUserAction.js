@@ -8,8 +8,10 @@ export const loadCurrentUserAction = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     const token = localStorage.getItem("token");
     if (!token) {
+      console.error("Token not found in local storage.");
       return rejectWithValue("No token available");
     }
+
 
     try {
       const response = await axios.get("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/current", {

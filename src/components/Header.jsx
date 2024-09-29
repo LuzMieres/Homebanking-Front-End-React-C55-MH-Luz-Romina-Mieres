@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 import 'sweetalert2/dist/sweetalert2.min.css'; // Importar el CSS de SweetAlert2
-import '../styles/style.css';
+import '../styles/header.css';
 
 function Header() {
   const [showNav, setShowNav] = useState(false);

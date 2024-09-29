@@ -1,6 +1,5 @@
 import React from 'react';
 import AccountDetails from '../components/AccountDetails';
-import '../styles/AccountDetails.css';
 
 function Account() {
   return (

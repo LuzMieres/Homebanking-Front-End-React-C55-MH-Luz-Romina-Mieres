@@ -1,0 +1,193 @@
+/* Estilos para LoansData */
+.loans-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem; /* Espaciado entre elementos */
+    padding: 1rem; /* Padding en todo el contenedor */
+    min-height: 100vh; /* Ocupa toda la altura de la ventana */
+    width: 100%;
+  }
+  
+  .loans-instruction {
+    text-align: center;
+    color: #374151; /* Texto gris oscuro */
+    font-size: 1rem; /* Tamaño del texto */
+    margin-bottom: 1rem; /* Margen inferior */
+  }
+  
+  .loans-table-container {
+    overflow-x: auto; /* Scroll horizontal si es necesario */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1024px; /* Ancho máximo */
+  }
+  
+  .loans-table {
+    width: 90%; /* Ocupa el 90% del contenedor */
+    background-color: #1e3a8a; /* Fondo azul */
+    color: #ffffff; /* Texto blanco */
+    border-radius: 0.75rem; /* Borde redondeado */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+    table-layout: auto; /* Ancho de tabla automático */
+  }
+  
+  .loans-table-header {
+    background-color: #1e40af; /* Azul más oscuro */
+  }
+  
+  .loans-table-header-cell,
+  .loans-table-cell {
+    padding: 0.5rem; /* Espaciado interno */
+    text-align: start; /* Texto alineado a la izquierda */
+    border: 1px solid #d1d5db; /* Borde gris claro */
+    font-size: 0.75rem; /* Tamaño del texto */
+  }
+  
+  .loans-table-row {
+    background-color: #2563eb; /* Fondo azul */
+    cursor: pointer; /* Cambia el cursor a mano */
+    transition: background-color 0.3s ease; /* Transición suave */
+  }
+  
+  .loans-table-row:nth-child(odd) {
+    background-color: #3b82f6; /* Azul más claro */
+  }
+  
+  .loans-table-row:hover {
+    background-color: #93c5fd; /* Azul claro al pasar el cursor */
+  }
+  
+  .no-loans-message {
+    text-align: center;
+    color: #9ca3af; /* Texto gris claro */
+    font-size: 1rem; /* Tamaño del texto */
+  }
+  
+  .request-loan-button {
+    background-color: #081a3a; /* Azul oscuro */
+    color: #fff; /* Texto blanco */
+    padding: 10px 20px; /* Padding interno */
+    font-size: 1rem; /* Tamaño del texto */
+    border: none;
+    border-radius: 5px; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor a mano */
+    margin-top: 20px; /* Margen superior */
+    transition: background-color 0.3s ease; /* Transición suave */
+  }
+  
+  .request-loan-button:hover {
+    background-color: #4a5568; /* Fondo gris al pasar el cursor */
+  }
+  
+  .request-loan-button:focus {
+    outline: none; /* Quita el borde de enfoque */
+  }
+  
+  @media (min-width: 640px) {
+    .loans-table-header-cell,
+    .loans-table-cell {
+      font-size: 0.875rem; /* Tamaño del texto en pantallas medianas */
+    }
+  
+    .request-loan-button {
+      font-size: 1.125rem; /* Tamaño del texto en pantallas medianas */
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .loans-table {
+      width: 70%; /* Ancho de la tabla en pantallas medianas */
+    }
+  
+    .request-loan-button {
+      width: 60%; /* Ancho del botón en pantallas medianas */
+      font-size: 1.25rem; /* Tamaño del texto en pantallas medianas */
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .loans-table {
+      width: 50%; /* Ancho de la tabla en pantallas grandes */
+    }
+  
+    .request-loan-button {
+      width: 40%; /* Ancho del botón en pantallas grandes */
+      font-size: 1.25rem; /* Tamaño del texto en pantallas grandes */
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .loans-table-header-cell,
+    .loans-table-cell {
+      font-size: 1rem; /* Tamaño del texto en pantallas extra grandes */
+    }
+  
+    .request-loan-button {
+      width: 30%; /* Ancho del botón en pantallas extra grandes */
+      font-size: 1.5rem; /* Tamaño del texto en pantallas extra grandes */
+    }
+  }
+  
+  @media (min-width: 1536px) {
+    .loans-table-header-cell,
+    .loans-table-cell {
+      font-size: 1.25rem; /* Tamaño del texto en pantallas muy grandes */
+    }
+  
+    .request-loan-button {
+      width: 20%; /* Ancho del botón en pantallas muy grandes */
+      font-size: 1.75rem; /* Tamaño del texto en pantallas muy grandes */
+    }
+  }
+  
+  @media (min-width: 1920px) {
+    .loans-table-header-cell,
+    .loans-table-cell {
+      font-size: 1.5rem; /* Tamaño del texto en pantallas ultra grandes */
+    }
+  
+    .request-loan-button {
+      font-size: 2rem; /* Tamaño del texto en pantallas ultra grandes */
+    }
+  }
+
+  .loan-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .loan-table {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px 0;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .loan-table th, .loan-table td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  .loan-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .loan-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .loan-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  

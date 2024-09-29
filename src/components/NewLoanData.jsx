@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { requestNewLoanAction } from '../redux/actions/loanActions';
 import { loadCurrentUserAction } from '../redux/actions/loadCurrentUserAction';
-import '../styles/style.css';
+import '../styles/newLoansData.css';
 
 const availableLoans = [
   {

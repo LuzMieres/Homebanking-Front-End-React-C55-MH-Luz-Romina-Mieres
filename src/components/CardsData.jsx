@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loadCurrentUserAction } from '../redux/actions/loadCurrentUserAction';
 import CardCarousel from './CardCarousel';
-import '../styles/style.css';
+import '../styles/cardsData.css';
 
 function CardsData() {
   const dispatch = useDispatch();

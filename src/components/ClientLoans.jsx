@@ -1,36 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { loadClientLoans } from '../redux/actions/loanActions';
-import '../styles/style.css';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loadClientLoans } from "../redux/actions/loanActions";
+import "../styles/loansData.css";
 
 const ClientLoans = () => {
   const dispatch = useDispatch();
-  const { clientLoans, status, error } = useSelector(state => state.clientLoans);
-  const [loans, setLoans] = useState([]);
+  const { loans, status, error } = useSelector((state) => state.loans); // Verifica que esté correctamente mapeado
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(loadClientLoans());
+      dispatch(loadCurrentUserAction());
     }
   }, [dispatch, status]);
-
+  
   useEffect(() => {
-    if (clientLoans) {
-      setLoans(clientLoans);
+    if (client && loansStatus === 'idle') {
+      dispatch(loadClientLoans());
     }
-  }, [clientLoans]);
+  }, [dispatch, client, loansStatus]);
 
-  if (status === 'loading') {
-    return <div>Loading...</div>;
+  if (status === "loading") {
+    return <div className="text-center text-gray-600">Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="text-center text-red-600">Error: {error}</div>;
   }
 
   return (
     <div className="loan-list">
-      {loans.length > 0 ? (
+      {loans && loans.length > 0 ? (
         <table className="loan-table">
           <thead>
             <tr>
@@ -38,23 +37,25 @@ const ClientLoans = () => {
               <th>Requested Amount</th>
               <th>Credited Amount</th>
               <th>Total with Interest</th>
-              <th>Remaining Payments</th>
+              <th>Payments</th>
+              <th>Destination Account</th>
             </tr>
           </thead>
           <tbody>
-            {loans.map(loan => (
-              <tr key={loan.id}>
-                <td>{loan.loanType}</td>
-                <td>{new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(loan.amount)}</td>
-                <td>{new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(loan.creditedAmount)}</td>
-                <td>{new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(loan.totalAmount)}</td>
-                <td>{loan.remainingPayments}</td>
+            {loans.map((loan, index) => (
+              <tr key={index}>
+                <td>{loan.loanName}</td>
+                <td>{loan.amountRequested}</td>
+                <td>{loan.amountCredited}</td>
+                <td>{loan.totalAmountWithInterest}</td>
+                <td>{loan.payments}</td>
+                <td>{loan.destinationAccountNumber}</td>
               </tr>
             ))}
           </tbody>
         </table>
       ) : (
-        <div>No loans found</div>
+        <div className="text-center text-gray-600">No loans available.</div>
       )}
     </div>
   );

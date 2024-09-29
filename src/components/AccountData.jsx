@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { loadCurrentUserAction } from "../redux/actions/loadCurrentUserAction";
+import "../styles/accountDetails.css";
 
 function AccountDetails() {
   const { id } = useParams(); // Obtener el ID de la cuenta desde los parámetros de la URL

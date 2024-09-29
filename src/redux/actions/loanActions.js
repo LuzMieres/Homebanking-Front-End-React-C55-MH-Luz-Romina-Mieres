@@ -52,7 +52,6 @@ export const requestNewLoanAction = createAsyncThunk(
 );
 
 
-// Acción para cargar los préstamos del cliente
 export const loadClientLoans = createAsyncThunk(
   "loans/loadClientLoans",
   async (_, { rejectWithValue }) => {
@@ -62,14 +61,14 @@ export const loadClientLoans = createAsyncThunk(
     }
 
     try {
+      console.log("Enviando solicitud para cargar préstamos con token:", token);
       const response = await axios.get("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/loans/clientloans", {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-
-      console.log("Datos de los préstamos cargados:", response.data);
-      return response.data; // Devuelve los préstamos del cliente
+      console.log("Respuesta recibida de los préstamos del cliente:", response.data);
+      return response.data;
     } catch (error) {
       console.error("Error al cargar los préstamos del cliente:", error);
       return rejectWithValue(
@@ -78,3 +77,4 @@ export const loadClientLoans = createAsyncThunk(
     }
   }
 );
+

@@ -342,7 +342,7 @@ main {
 .cardholder,
 .card-dates,
 .cvv {
-  font-size: 1rem;
+  font-size: 2rem;
   font-weight: bold;
 }
 
@@ -425,7 +425,7 @@ main {
   justify-content: center;
   align-items: center;
   background-color: #e5e7eb; /* Gris claro */
-  border-radius: 10px;
+  border-radius: 20px;
   text-align: center;
 }
 
@@ -612,7 +612,7 @@ main {
     position: absolute;
     bottom: 10px; /* Colocar debajo del carrusel */
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-93%);
   }
 
   .card-type-selector{

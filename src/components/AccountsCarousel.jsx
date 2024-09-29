@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/style.css'; // Importar los estilos
+import '../styles/accountsCarousel.css'; // Importar los estilos
 
 const AccountsCarousel = ({ accounts, onAccountClick }) => {
   const [currentAccountIndex, setCurrentAccountIndex] = useState(0);

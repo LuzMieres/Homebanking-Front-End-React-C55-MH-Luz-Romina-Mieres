@@ -25,7 +25,8 @@ const loanReducer = createReducer(initialState, (builder) => {
       state.status = "loading";
     })
     .addCase(loadClientLoans.fulfilled, (state, action) => {
-      state.loans = action.payload; // Actualiza la lista de préstamos del cliente
+      console.log("Préstamos recibidos:", action.payload); // Añade un log aquí para verificar los datos recibidos
+      state.loans = action.payload;
       state.status = "succeeded";
     })
     .addCase(loadClientLoans.rejected, (state, action) => {

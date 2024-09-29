@@ -1,0 +1,100 @@
+/* Estilos para AccountsCarousel */
+.accounts-carousel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    padding: 20px 0;
+  }
+  
+  .accounts-carousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .accounts-carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out; /* Transición suave */
+    width: 100%;
+  }
+  
+  .accounts-carousel-card {
+    width: 90%;
+    height: 250px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin: 0 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    background-color: #fff; /* Fondo blanco */
+  }
+  
+  .account-card {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #e5e7eb; /* Gris claro */
+    border-radius: 20px;
+    text-align: center;
+  }
+  
+  .account-card p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #000; /* Color negro */
+  }
+  
+  .account-card p.account-number {
+    font-weight: bold;
+  }
+  
+  .account-card p.account-balance {
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff; /* Color blanco */
+  }
+  
+  .account-card p.account-creation-date {
+    color: #000; /* Color negro */
+  }
+  
+  /* Botones de navegación */
+  .prev-button,
+  .next-button {
+    background-color: #1d4ed8; /* Color azul */
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .prev-button:disabled,
+  .next-button:disabled {
+    opacity: 0.5; /* Opacidad reducida para los botones deshabilitados */
+    cursor: not-allowed; /* Cursor de no permitido */
+  }
+  
+  @media (max-width: 767px) {
+    .prev-button,
+    .next-button {
+      position: absolute;
+      bottom: 10px; /* Colocar debajo del carrusel */
+      left: 50%;
+      transform: translateX(-93%);
+    }
+  }
+  

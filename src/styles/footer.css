@@ -1,0 +1,76 @@
+/* === Estilos del Footer === */
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    min-height: 10vh;
+    width: 100vw;
+    background-color: #002f6c;
+    color: #ffffff;
+    text-align: center;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  footer p,
+  footer a {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+  }
+  
+  footer a:hover {
+    color: #00b2ff;
+  }
+  
+  footer img {
+    width: 30px;
+    height: 30px;
+    margin: 0.5rem;
+    filter: brightness(0) invert(1); /* Convertir los logos a blanco */
+  }
+  
+  @media (min-width: 640px) {
+    .footer-content {
+      flex-direction: row; /* Cambiar a fila en pantallas más grandes */
+      align-items: center;
+      justify-content: space-around;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .footer {
+      flex-direction: row;
+      justify-content: space-around;
+    }
+  
+    footer p,
+    footer a {
+      font-size: 1.25rem;
+    }
+  
+    footer img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    footer p,
+    footer a {
+      font-size: 1.5rem;
+    }
+  
+    footer img {
+      width: 50px;
+      height: 50px;
+    }
+  }
+  

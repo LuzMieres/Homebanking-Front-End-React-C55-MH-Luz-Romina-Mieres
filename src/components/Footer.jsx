@@ -1,10 +1,10 @@
 import React from "react";
-import "../styles/style.css";
+import "../styles/footer.css";
 
 function Footer({ className = "" }) {
   return (
     <footer className={`footer ${className}`}>
-      <div className="footer-content">
+      <div className="footer-content w-full">
         <div className="footer-links md:flex md:flex-row md:gap-3 lg:flex lg:flex-row lg:gap-5 xl:flex xl:flex-row xl:gap-5 2xl:flex 2xl:flex-row 2xl:gap-5">
           <p className="footer-text">© 2023. All rights reserved.</p>
           <a
@@ -17,7 +17,7 @@ function Footer({ className = "" }) {
           </a>
           <p className="footer-text">MindHub - CoHort 55</p>
         </div>
-        <div className="footer-icons">
+        <div className="footer-icons md:flex md:flex-row lg:flex lg:flex-row xl:flex xl:flex-row 2xl:flex 2xl:flex-row">
           <a
             href="https://www.facebook.com/"
             target="_blank" // Abrir en una nueva ventana

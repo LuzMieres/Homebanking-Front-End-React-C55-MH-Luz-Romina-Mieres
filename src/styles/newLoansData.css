@@ -1,0 +1,180 @@
+/* Estilos para NewLoanData */
+.new-loan-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Ocupa toda la altura de la ventana */
+    width: 100%;
+    padding: 1rem; /* Padding en todo el contenedor */
+    box-sizing: border-box;
+  }
+  
+  .loan-form-container {
+    background-color: #ffffff; /* Fondo blanco */
+    border-radius: 0.5rem; /* Borde redondeado */
+    padding: 2rem; /* Espaciado interno */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Sombra */
+    width: 90%; /* Ancho de 90% */
+    max-width: 600px; /* Ancho máximo */
+  }
+  
+  .loan-image {
+    width: 100%; /* Ocupa todo el ancho */
+    height: auto; /* Mantiene proporciones */
+    object-fit: cover; /* Ajuste de imagen */
+    margin-bottom: 1rem; /* Margen inferior */
+  }
+  
+  .loan-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Espaciado entre elementos */
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-label {
+    font-size: 1rem; /* Tamaño del texto */
+    color: #374151; /* Color gris oscuro */
+    margin-bottom: 0.5rem; /* Margen inferior */
+  }
+  
+  .form-select,
+  .form-input {
+    width: 100%; /* Ocupa todo el ancho */
+    padding: 0.5rem; /* Espaciado interno */
+    font-size: 1rem; /* Tamaño del texto */
+    border: 1px solid #d1d5db; /* Borde gris claro */
+    border-radius: 0.375rem; /* Borde redondeado */
+    background-color: #f9fafb; /* Fondo gris claro */
+    transition: border-color 0.2s ease; /* Transición suave */
+  }
+  
+  .form-select:focus,
+  .form-input:focus {
+    outline: none; /* Sin borde de enfoque */
+    border-color: #2563eb; /* Borde azul al enfocar */
+  }
+  
+  .input-error {
+    border-color: #ef4444; /* Borde rojo para errores */
+  }
+  
+  .form-option {
+    background-color: #1e3a8a; /* Fondo azul */
+    color: #ffffff; /* Texto blanco */
+  }
+  
+  .error-message {
+    font-size: 0.875rem; /* Tamaño del texto */
+    color: #ef4444; /* Color rojo */
+    margin-top: 0.25rem; /* Margen superior */
+  }
+  
+  .amount-info {
+    font-size: 0.75rem; /* Tamaño del texto */
+    margin-top: 0.25rem; /* Margen superior */
+    color: #6b7280; /* Texto gris */
+  }
+  
+  .submit-button {
+    width: 100%; /* Ocupa todo el ancho */
+    padding: 0.75rem; /* Espaciado interno */
+    font-size: 1rem; /* Tamaño del texto */
+    background-color: #1e3a8a; /* Fondo azul oscuro */
+    color: #ffffff; /* Texto blanco */
+    border: none;
+    border-radius: 0.375rem; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor a mano */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones */
+  }
+  
+  .submit-button:hover {
+    background-color: #2563eb; /* Azul claro al pasar el cursor */
+    transform: translateY(-2px); /* Sube el botón ligeramente */
+  }
+  
+  .button-disabled {
+    background-color: #9ca3af; /* Gris para botón deshabilitado */
+    cursor: not-allowed; /* Cursor no permitido */
+  }
+  
+  @media (min-width: 640px) {
+    .form-label {
+      font-size: 1.125rem; /* Tamaño del texto en pantallas medianas */
+    }
+  
+    .form-select,
+    .form-input {
+      font-size: 1.125rem; /* Tamaño del texto en pantallas medianas */
+    }
+  
+    .submit-button {
+      font-size: 1.125rem; /* Tamaño del texto en pantallas medianas */
+    }
+  
+    .error-message {
+      font-size: 1rem; /* Tamaño del texto en pantallas medianas */
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .loan-form-container {
+      max-width: 700px; /* Ancho máximo en pantallas medianas */
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .loan-form-container {
+      max-width: 800px; /* Ancho máximo en pantallas grandes */
+    }
+  
+    .form-select,
+    .form-input {
+      font-size: 1.25rem; /* Tamaño del texto en pantallas grandes */
+      padding: 0.75rem; /* Espaciado interno */
+    }
+  
+    .submit-button {
+      font-size: 1.25rem; /* Tamaño del texto en pantallas grandes */
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .loan-form-container {
+      max-width: 900px; /* Ancho máximo en pantallas extra grandes */
+    }
+  
+    .form-label,
+    .form-select,
+    .form-input,
+    .submit-button,
+    .error-message {
+      font-size: 1.5rem; /* Tamaño del texto en pantallas extra grandes */
+    }
+  }
+  
+  @media (min-width: 1536px) {
+    .loan-form-container {
+      max-width: 1000px; /* Ancho máximo en pantallas muy grandes */
+    }
+  }
+  
+  @media (min-width: 1920px) {
+    .loan-form-container {
+      max-width: 1100px; /* Ancho máximo en pantallas ultra grandes */
+    }
+  
+    .form-label,
+    .form-select,
+    .form-input,
+    .submit-button,
+    .error-message {
+      font-size: 1.75rem; /* Tamaño del texto en pantallas ultra grandes */
+    }
+  }
+  

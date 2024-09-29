@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import AccountsData from '../components/AccountsData';
-import '../styles/style.css';
+import '../styles/accounts.css';
 
 function Accounts() {
   const { client } = useSelector((state) => state.currentUser); // Obtener el cliente desde el estado global

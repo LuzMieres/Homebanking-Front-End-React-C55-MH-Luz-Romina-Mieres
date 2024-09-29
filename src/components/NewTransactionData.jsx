@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import '../styles/style.css';
+import '../styles/newTransactionsData.css';
 import { useDispatch } from 'react-redux';
 import { loadCurrentUserAction } from '../redux/actions/loadCurrentUserAction';
 
@@ -286,7 +286,7 @@ function NewTransactionData() {
 
   return (
     <div className="new-transaction-container">
-      <div className="transaction-form-container">
+      <div className="w-full flex flex-col md:flex md:flex-row md:w-[90%] md:gap-2 lg:flex lg:flex-row xl:flex xl:flex-row 2xl:flex 2xl:flex-row">
         <img className="transaction-image" src="newTransaction.png" alt="newTransaction" />
         <form onSubmit={handleSubmit} className="transaction-form">
           <div className="account-type-container">

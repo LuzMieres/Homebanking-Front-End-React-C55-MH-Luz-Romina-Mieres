@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { loadClientLoans } from '../redux/actions/loanActions';
 import { loadCurrentUserAction } from '../redux/actions/loadCurrentUserAction'; // Corrige la importación
-import '../styles/style.css';
+import '../styles/loansData.css';
 
 function LoansData() {
   const dispatch = useDispatch();
