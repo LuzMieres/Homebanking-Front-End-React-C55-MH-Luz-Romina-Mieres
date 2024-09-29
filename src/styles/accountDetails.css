@@ -1,3 +1,8 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
 /* Estilos para AccountDetails */
 .account-details-container {
     display: flex;

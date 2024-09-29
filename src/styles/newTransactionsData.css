@@ -1,3 +1,8 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
 /* === Estilos del Formulario de Transacciones (NewTransactionData) === */
 .new-transaction-container {
     display: flex;
@@ -71,6 +76,10 @@
     margin-bottom: 0.25rem; /* Margen inferior */
     display: block; /* Muestra el elemento como bloque */
   }
+
+  .options{
+    color: black;
+  }
   
   .form-select,
   .form-input {
@@ -78,7 +87,7 @@
     padding: 0.5rem; /* Espaciado interno */
     font-size: 0.875rem; /* Tamaño del texto */
     background-color: #3c5494; /* Fondo azul */
-    color: #342baa; /* Texto blanco */
+    color: #000000; /* Texto blanco */
     border: none;
     border-radius: 0.375rem; /* Borde redondeado */
     transition: border-color 0.2s ease; /* Transición suave */
@@ -96,7 +105,7 @@
   
   .form-option {
     background-color: #1e3a8a; /* Fondo azul */
-    color: #ffffff; /* Texto blanco */
+    color: #000000; /* Texto blanco */
   }
   
   .error-message {

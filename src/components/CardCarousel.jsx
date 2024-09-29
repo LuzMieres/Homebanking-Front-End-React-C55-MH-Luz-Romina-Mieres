@@ -18,26 +18,26 @@ const CardCarousel = ({ cards, clientName }) => {
   };
 
   return (
-    <div className="accounts-carousel-container">
+    <div className="cards-carousel-container">
       {/* Contenedor principal del carrusel */}
-      <div className="accounts-carousel">
+      <div className="cards-carousel">
         <div
-          className="accounts-carousel-inner"
+          className="cards-carousel-inner"
           style={{
-            transform: `translateX(-${currentCardIndex * 410}px)`, // Deslizar en base al tamaño de la tarjeta
+            transform: `translateX(-${currentCardIndex * 400}px)`, // Deslizar en base al tamaño de la tarjeta
             width: `${cards.length * 360}px`, // Ajusta el ancho del contenedor interno según la cantidad de tarjetas
           }}
         >
           {cards.map((card, index) => (
             <div
               key={index}
-              className={`accounts-carousel-card ${
+              className={`cards-carousel-card ${
                 flippedCards[index] ? 'flipped' : ''
               }`} // Clase para tarjetas giradas
               onClick={() => toggleCardFlip(index)} // Gira la tarjeta al hacer clic
             >
               <div
-                className="account-card account-card-front"
+                className="card card-front"
                 style={{
                   backgroundImage: `url(${
                     card.color === 'GOLD'
@@ -61,7 +61,7 @@ const CardCarousel = ({ cards, clientName }) => {
                 <div className="card-content">
                   <p className="card-number">{card.number}</p>
                   <p className="cardholder">
-                    {clientName || card.cardholder}
+                    {clientName || card.clientHolder}
                   </p>{' '}
                   {/* Mostrar nombre del cliente logueado */}
                   <p className="card-dates">
@@ -79,7 +79,7 @@ const CardCarousel = ({ cards, clientName }) => {
                 </div>
               </div>
               <div
-                className="account-card account-card-back"
+                className="card card-back"
                 style={{
                   backgroundImage: `url(${
                     card.color === 'GOLD'

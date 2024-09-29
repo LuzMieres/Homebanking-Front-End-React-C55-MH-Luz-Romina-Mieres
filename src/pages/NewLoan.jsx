@@ -1,6 +1,5 @@
 import React from 'react';
 import NewLoanData from '../components/NewLoanData';
-import '../styles/style.css';
 
 function NewLoan() {
   return (

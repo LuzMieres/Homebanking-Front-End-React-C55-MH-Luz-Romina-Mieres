@@ -1,6 +1,5 @@
 import React from 'react';
 import NewCardData from '../components/NewCardData';
-import '../styles/style.css';
 
 function NewCard() {
   return (

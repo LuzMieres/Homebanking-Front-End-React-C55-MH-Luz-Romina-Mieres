@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import '../styles/style.css';
+import '../styles/newCardsData.css'; // Importar la hoja de estilos nueva
 import { requestNewCardAction } from '../redux/actions/cardActions';
 import { loadCurrentUserAction } from '../redux/actions/loadCurrentUserAction';
 
@@ -11,9 +11,9 @@ function NewCardData() {
     cardType: '',
     cardColor: '',
   });
-  const [errors, setErrors] = useState({}); // Estado para errores de validación
-  const [availableColors, setAvailableColors] = useState([]); // Estado para colores disponibles
-  const [availableCardTypes, setAvailableCardTypes] = useState(['DEBIT', 'CREDIT']); // Estado para tipos de tarjetas disponibles
+  const [errors, setErrors] = useState({});
+  const [availableColors, setAvailableColors] = useState([]);
+  const [availableCardTypes, setAvailableCardTypes] = useState(['DEBIT', 'CREDIT']);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { client, status, error } = useSelector((state) => state.currentUser);
@@ -38,16 +38,13 @@ function NewCardData() {
     } else {
       setAvailableColors([]);
     }
-  }, [formData.cardType, client, status]); // Agregar status como dependencia
-  
+  }, [formData.cardType, client, status]);
 
   useEffect(() => {
-    // Filtrar tipos de tarjeta disponibles en función de las tarjetas ya solicitadas
     if (client) {
-      const maxColorsPerType = 3; // Máximo número de tarjetas por tipo
+      const maxColorsPerType = 3;
       const cardTypes = ['DEBIT', 'CREDIT'];
 
-      // Verificar cuántas tarjetas de cada tipo y color tiene el cliente
       const cardTypeAvailability = cardTypes.reduce((acc, type) => {
         const colorsOwned = client.cards.filter(card => card.type === type).length;
         if (colorsOwned < maxColorsPerType) {
@@ -58,7 +55,6 @@ function NewCardData() {
 
       setAvailableCardTypes(cardTypeAvailability);
 
-      // Si el tipo de tarjeta seleccionado ya no está disponible, resetear el tipo seleccionado
       if (!cardTypeAvailability.includes(formData.cardType)) {
         setFormData(prevState => ({
           ...prevState,
@@ -77,7 +73,7 @@ function NewCardData() {
     }));
     setErrors(prevErrors => ({
       ...prevErrors,
-      [name]: '' // Limpiar error correspondiente cuando se selecciona un valor
+      [name]: '' 
     }));
   };
 
@@ -90,13 +86,11 @@ function NewCardData() {
       return;
     }
 
-    // Después de solicitar la nueva tarjeta
     dispatch(requestNewCardAction({
       type: formData.cardType,
       color: formData.cardColor
     })).then((result) => {
       if (result.meta.requestStatus === 'fulfilled') {
-        // Volver a cargar los datos del cliente
         dispatch(loadCurrentUserAction()).then(() => {
           Swal.fire({
             title: 'Card Requested',
@@ -109,7 +103,6 @@ function NewCardData() {
         });
       }
     });
-
   };
 
   const validateForm = () => {
@@ -137,50 +130,50 @@ function NewCardData() {
   const isFormValid = formData.cardType && formData.cardColor;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen w-full p-4">
-      <div className="flex flex-col md:flex-row items-center justify-center w-[90%] bg-white p-4 rounded-lg shadow-2xl gap-4">
+    <div className="new-card-container">
+      <div className="new-card-form-container">
         <img
-          className="w-full sm:w-1/2 h-auto object-cover mb-4 sm:mb-0 rounded-md"
+          className="new-card-image"
           src="newCard.png"
           alt="newCard"
         />
-        <form onSubmit={handleSubmit} className="flex flex-col items-center sm:items-start w-full sm:w-1/2 gap-4">
-          <div className="w-full">
-            <label className="text-gray-700 text-base sm:text-lg md:text-xl block mb-2" htmlFor="cardType">Select card type</label>
+        <form onSubmit={handleSubmit} className="new-card-form">
+          <div className="form-group options">
+            <label className="form-label options" htmlFor="cardType">Select card type</label>
             <select
-              className="w-full p-2 bg-blue-700 text-white text-base sm:text-lg md:text-xl rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-select options"
               id="cardType"
               name="cardType"
               value={formData.cardType}
               onChange={handleInputChange}
             >
-              <option value="" disabled>Select a card type</option>
+              <option className='options' value="" disabled>Select a card type</option>
               {availableCardTypes.map(type => (
-                <option key={type} value={type}>{type.charAt(0) + type.slice(1).toLowerCase()}</option>
+                <option className='options' key={type} value={type}>{type.charAt(0) + type.slice(1).toLowerCase()}</option>
               ))}
             </select>
-            {errors.cardType && <p className="text-red-500 text-sm">{errors.cardType}</p>}
+            {errors.cardType && <p className="error-message">{errors.cardType}</p>}
           </div>
-          <div className="w-full">
-            <label className="text-gray-700 text-base sm:text-lg md:text-xl block mb-2" htmlFor="cardColor">Select card color</label>
+          <div className="form-group options">
+            <label className="form-label options" htmlFor="cardColor">Select card color</label>
             <select
-              className="w-full p-2 bg-blue-700 text-white text-base sm:text-lg md:text-xl rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-select options"
               id="cardColor"
               name="cardColor"
               value={formData.cardColor}
               onChange={handleInputChange}
-              disabled={!formData.cardType} // Desactivar si no hay tipo de tarjeta seleccionado
+              disabled={!formData.cardType}
             >
-              <option value="" disabled>Select a card color</option>
+              <option className='options' value="" disabled>Select a card color</option>
               {availableColors.map(color => (
-                <option key={color} value={color}>{color}</option>
+                <option className='options' key={color} value={color}>{color}</option>
               ))}
             </select>
-            {errors.cardColor && <p className="text-red-500 text-sm">{errors.cardColor}</p>}
+            {errors.cardColor && <p className="error-message">{errors.cardColor}</p>}
           </div>
           <button
             type="submit"
-            className={`w-full text-white p-3 rounded text-lg sm:text-base md:text-lg transition-all duration-300 ${isFormValid ? 'bg-blue-800 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'}`}
+            className={`submit-button ${!isFormValid ? 'button-disabled' : ''}`}
             disabled={!isFormValid}
           >
             Request Card

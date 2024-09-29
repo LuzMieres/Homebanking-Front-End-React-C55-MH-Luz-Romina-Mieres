@@ -1,3 +1,8 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
 /* Estilos para NewLoanData */
 .new-loan-container {
     display: flex;
@@ -41,6 +46,10 @@
     font-size: 1rem; /* Tamaño del texto */
     color: #374151; /* Color gris oscuro */
     margin-bottom: 0.5rem; /* Margen inferior */
+  }
+
+  .options{
+    color: black;
   }
   
   .form-select,
@@ -125,6 +134,19 @@
   @media (min-width: 768px) {
     .loan-form-container {
       max-width: 700px; /* Ancho máximo en pantallas medianas */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+    }
+
+    .loan-image{
+      width: 50%;
+    }
+
+    .loan-form{
+      width: 50%;
     }
   }
   

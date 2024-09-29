@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/style.css';
 import ClientLoans from '../components/ClientLoans';
 
 function Loans() {

@@ -1,29 +1,34 @@
-.accounts-carousel-container {
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
+.cards-carousel-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 390px; /* Ancho del contenedor ajustado */
+  width: 410px; /* Ancho del contenedor ajustado */
+  height: 80vh;
   position: relative;
   overflow: hidden;
   padding: 20px 0;
 }
 
-.accounts-carousel {
+.cards-carousel {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   overflow: hidden;
-  margin-right: 63px; /* Ajuste de margen derecho */
-}
+ }
 
-.accounts-carousel-inner {
+.cards-carousel-inner {
   display: flex;
   transition: transform 1.5s ease-in-out; /* Aumenta el tiempo de transición para que el deslizamiento sea más lento */
 }
 
-.accounts-carousel-card {
+.cards-carousel-card {
   width: 390px; /* Ancho ajustado */
   height: 220px; /* Alto ajustado */
   flex-shrink: 0;
@@ -39,11 +44,11 @@
   margin: 0 10px; /* Espaciado entre tarjetas */
 }
 
-.accounts-carousel-card.flipped {
+.cards-carousel-card.flipped {
   transform: rotateY(180deg); /* Rotar 180 grados en el eje Y */
 }
 
-.account-card, .account-card-back {
+.card, .card-back {
   width: 100%;
   height: 100%;
   backface-visibility: hidden; /* Ocultar la parte trasera cuando esté de frente */
@@ -60,7 +65,7 @@
   background-position: center;
 }
 
-.account-card-back {
+.card-back {
   transform: rotateY(180deg); /* Rotar la parte trasera */
 }
 
@@ -83,8 +88,21 @@
   color: #000;
 }
 
+.card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 55%;
+  padding: 1rem;
+  box-sizing: border-box;
+  position: absolute;
+  top: 98px;
+}
+
 .cvv-number {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: bold;
   color: #000;
 }

@@ -1,5 +1,4 @@
 import React, { createContext, useState } from 'react';
-import '../styles/style.css';
 
 export const TransactionsContext = createContext();
 

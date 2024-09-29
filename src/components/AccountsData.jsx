@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loadCurrentUserAction } from "../redux/actions/loadCurrentUserAction";
 import AccountsCarousel from './AccountsCarousel'; // Importar el componente AccountsCarousel
+import "../styles/accountsData.css"
 
 function AccountsData() {
   const dispatch = useDispatch();

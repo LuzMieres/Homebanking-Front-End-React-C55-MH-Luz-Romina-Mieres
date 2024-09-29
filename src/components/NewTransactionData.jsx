@@ -6,16 +6,15 @@ import '../styles/newTransactionsData.css';
 import { useDispatch } from 'react-redux';
 import { loadCurrentUserAction } from '../redux/actions/loadCurrentUserAction';
 
-export const transactionsArray = [];
 export const savedAccounts = JSON.parse(localStorage.getItem('savedAccounts')) || [];
 
 function NewTransactionData() {
   const [formData, setFormData] = useState({
-    accountType: 'Own',
+    accountType: '',
     sourceAccount: '',
     destinationAccount: '',
     amount: '',
-    description: '', // Nuevo campo para descripción
+    description: '',
   });
   const [client, setClient] = useState(null);
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -32,6 +31,8 @@ function NewTransactionData() {
     obtenerClient();
   }, []);
 
+  const isFormValid = formData.sourceAccount && formData.destinationAccount && formData.amount && !amountError && !amountInvalid;
+
   function obtenerClient() {
     axios.get("https://homebanking-back-luz-mieres-c55-mh.onrender.com/api/auth/current", {
       headers: {
@@ -46,45 +47,42 @@ function NewTransactionData() {
       });
   }
 
-  function updateDescription() {
-    const source = formData.sourceAccount;
-    const destination = formData.destinationAccount;
-    if (source && destination) {
+  useEffect(() => {
+    if (formData.sourceAccount && formData.destinationAccount) {
+      const newDescription = `Transfer from ${formData.sourceAccount} to ${formData.destinationAccount}`;
       setFormData(prevState => ({
         ...prevState,
-        description: `Transfer from ${source} to ${destination}`,
+        description: newDescription,
       }));
     }
-  }
-
-  useEffect(() => {
-    updateDescription();
   }, [formData.sourceAccount, formData.destinationAccount]);
-
 
   function handleAccountTypeChange(event) {
     setFormData({
       ...formData,
       accountType: event.target.value,
-      destinationAccount: ''
+      destinationAccount: '',
+      amount: '',
     });
     setServerError('');
     setDestinationAccountError('');
-    setDestinationAccountBalance(null); // Reinicia el balance de destino
+    setDestinationAccountBalance(null);
   }
 
   function handleSourceAccountChange(event) {
     const selectedAccountNumber = event.target.value;
-    const account = client?.accounts.find(a => a.number === selectedAccountNumber);
-
-    if (account) {
-      setSelectedAccount(account);
-      setFormData(prevState => ({
-        ...prevState,
-        sourceAccount: selectedAccountNumber,
-      }));
-      setAmountError(false);
-      setAmountInvalid(false);
+    
+    if (client) {  
+      const account = client.accounts.find(a => a.number === selectedAccountNumber);
+      if (account) {
+        setSelectedAccount(account);
+        setFormData(prevState => ({
+          ...prevState,
+          sourceAccount: selectedAccountNumber,
+        }));
+        setAmountError(false);
+        setAmountInvalid(false);
+      }
     }
   }
 
@@ -97,26 +95,18 @@ function NewTransactionData() {
     setDestinationAccountError('');
     setServerError('');
 
-    const validPattern = /^VIN[A-Z0-9]*$/;
-    if (formData.accountType === 'Other' && destinationAccount && !validPattern.test(destinationAccount)) {
-      setDestinationAccountError('Destination account must start with "VIN" and contain only letters and numbers.');
+    const validPattern = /^VIN\d*$/;
+    if (formData.accountType === 'other' && destinationAccount && !validPattern.test(destinationAccount)) {
+      setDestinationAccountError('Destination account must start with "VIN" followed by numbers.');
     } else {
       setDestinationAccountError('');
     }
 
-    if (formData.accountType === 'Own') {
+    if (formData.accountType === 'own' && client) {
       const destinationAcc = client.accounts.find(a => a.number === destinationAccount);
       setDestinationAccountBalance(destinationAcc ? destinationAcc.balance : null);
     }
   }
-
-  function handleDescriptionChange(event) {
-    setFormData(prevState => ({
-      ...prevState,
-      description: event.target.value,
-    }));
-  }
-
 
   function formatAmountToARS(amount) {
     if (typeof amount !== 'number' || isNaN(amount)) {
@@ -126,24 +116,20 @@ function NewTransactionData() {
   }
 
   function handleAmountChange(event) {
-    // Obtener el valor ingresado sin caracteres no numéricos excepto el punto decimal
     let enteredAmount = event.target.value.replace(/[^0-9.]/g, '');
     const numericValue = parseFloat(enteredAmount);
 
-    // Actualizar el estado con el valor numérico sin formato
     setFormData(prevState => ({
       ...prevState,
       amount: enteredAmount,
     }));
 
-    // Validar si el valor es numérico y mayor a cero
     if (isNaN(numericValue) || numericValue <= 0) {
       setAmountInvalid(true);
       setAmountError(false);
       return;
     }
 
-    // Verificar si el monto excede el saldo disponible
     if (selectedAccount && numericValue > selectedAccount.balance) {
       setAmountError(true);
     } else {
@@ -166,46 +152,17 @@ function NewTransactionData() {
       return;
     }
 
-    // No formatear el monto en este punto para evitar confusión.
-    // Solo mantener el valor como número sin separadores adicionales.
     setFormData(prevState => ({
       ...prevState,
       amount: numericValue.toFixed(2),
     }));
   }
 
-  function updateAccountBalances(sourceAccountNumber, destinationAccountNumber, amount) {
-    const updatedAccounts = client.accounts.map(account => {
-      if (account.number === sourceAccountNumber) {
-        return {
-          ...account,
-          balance: account.balance - amount
-        };
-      } else if (account.number === destinationAccountNumber) {
-        return {
-          ...account,
-          balance: account.balance + amount
-        };
-      }
-      return account;
-    });
-
-    setClient(prevState => ({
-      ...prevState,
-      accounts: updatedAccounts
-    }));
-
-    if (formData.accountType === 'Own') {
-      const destinationAccount = updatedAccounts.find(account => account.number === destinationAccountNumber);
-      setDestinationAccountBalance(destinationAccount.balance);
-    }
-  }
-
   function handleSubmit(event) {
     event.preventDefault();
-  
-    // Convertir el monto a número sin formato
+
     const numericAmount = parseFloat(formData.amount.replace(/[^0-9.-]+/g, ''));
+
     if (!formData.sourceAccount || !formData.destinationAccount || isNaN(numericAmount)) {
       Swal.fire({
         icon: 'warning',
@@ -214,7 +171,7 @@ function NewTransactionData() {
       });
       return;
     }
-  
+
     if (amountError) {
       Swal.fire({
         icon: 'error',
@@ -223,7 +180,7 @@ function NewTransactionData() {
       });
       return;
     }
-  
+
     if (amountInvalid) {
       Swal.fire({
         icon: 'error',
@@ -232,17 +189,14 @@ function NewTransactionData() {
       });
       return;
     }
-  
+
     const newTransaction = {
       originAccountNumber: formData.sourceAccount,
       destinationAccountNumber: formData.destinationAccount,
-      amount: numericAmount, // Enviar el valor numérico correctamente formateado
-      description: formData.description, // Enviar la descripción
+      amount: numericAmount,
+      description: formData.description,
     };
-  
-    // Verificar los datos antes de enviarlos
-    console.log("Datos de la nueva transacción:", newTransaction);
-  
+
     Swal.fire({
       title: 'Confirm Transaction',
       html: `
@@ -270,29 +224,20 @@ function NewTransactionData() {
               icon: 'success',
               confirmButtonText: 'OK'
             }).then(() => {
-              updateAccountBalances(formData.sourceAccount, formData.destinationAccount, numericAmount);
               dispatch(loadCurrentUserAction());
+              navigate(`/accounts`);
             });
           })
           .catch(error => {
             if (error.response) {
-              console.error("Error en la respuesta del servidor:", error.response.data); // Verifica el error detallado
               setServerError(error.response.data || "There was a problem with the transaction.");
             } else {
-              console.error("Error en la solicitud:", error); // Verifica el error de solicitud
               setServerError("There was a problem with the transaction.");
             }
           });
       }
     });
   }
-  
-
-  if (!client) {
-    return <div className="text-center text-gray-600">Loading...</div>;
-  }
-
-  const isFormValid = formData.sourceAccount && formData.destinationAccount && formData.amount && !amountError && !amountInvalid;
 
   return (
     <div className="new-transaction-container">
@@ -300,110 +245,112 @@ function NewTransactionData() {
         <img className="transaction-image" src="newTransaction.png" alt="newTransaction" />
         <form onSubmit={handleSubmit} className="transaction-form">
           <div className="account-type-container">
-            <label className="account-type-label">
-              Own
+            <label className="account-type-label options">
+              own
               <input
                 type="radio"
                 name="accountType"
-                value="Own"
-                checked={formData.accountType === 'Own'}
+                value="own"
+                checked={formData.accountType === 'own'}
                 onChange={handleAccountTypeChange}
-                className="account-type-radio"
+                className="account-type-radio options"
               />
             </label>
-            <label className="account-type-label">
-              Other
+            <label className="account-type-label options">
+              other
               <input
                 type="radio"
                 name="accountType"
-                value="Other"
-                checked={formData.accountType === 'Other'}
+                value="other"
+                checked={formData.accountType === 'other'}
                 onChange={handleAccountTypeChange}
-                className="account-type-radio"
+                className="account-type-radio options"
               />
             </label>
-            <label className="account-type-label">
-              Saved
+            <label className="account-type-label options">
+              saved
               <input
                 type="radio"
                 name="accountType"
-                value="Saved"
-                checked={formData.accountType === 'Saved'}
+                value="saved"
+                checked={formData.accountType === 'saved'}
                 onChange={handleAccountTypeChange}
-                className="account-type-radio"
+                className="account-type-radio options"
               />
             </label>
           </div>
 
-          <div className="form-group">
+          {formData.accountType === '' && <p className="error-message">Please select an account type first</p>}
+
+          <div className="form-group options">
             <label className="form-label" htmlFor="sourceAccount">Select source account:</label>
             <select
-              className="form-select"
+              className={`form-select options ${formData.accountType === '' ? 'disabled' : ''}`}
               id="sourceAccount"
               name="sourceAccount"
               value={formData.sourceAccount}
               onChange={handleSourceAccountChange}
+              disabled={formData.accountType === ''}
             >
-              <option className='form-option' value="" disabled>Select a source account:</option>
-              {client.accounts.map(account => (
-                <option className='form-option' key={account.number} value={account.number}>{account.number}</option>
+              <option className='form-option options' value="" disabled>Select a source account:</option>
+              {client?.accounts.map(account => (
+                <option className='form-option options' key={account.number} value={account.number}>{account.number}</option>
               ))}
             </select>
+            {!formData.sourceAccount && <p className="error-message">Please select a source account</p>}
           </div>
 
-          <div className="form-group">
-            <p className="error-message">{serverError}</p>
-            <label className="form-label" htmlFor="destinationAccount">Destination account:</label>
-            {formData.accountType === 'Own' ? (
+          <div className="form-group options">
+            <label className="form-label options" htmlFor="destinationAccount">Destination account:</label>
+            {formData.accountType === 'own' ? (
               <select
-                className="form-select"
+                className={`form-select options ${!selectedAccount ? 'disabled' : ''}`}
                 id="destinationAccount"
                 name="destinationAccount"
                 value={formData.destinationAccount}
                 onChange={handleDestinationAccountChange}
+                disabled={!selectedAccount}
               >
-                <option className='form-option' value="" disabled>Select a destination account:</option>
-                {client.accounts
+                <option className='form-option options' value="" disabled>Select a destination account:</option>
+                {client?.accounts
                   .filter(account => account.number !== formData.sourceAccount)
                   .map(account => (
-                    <option className='form-option' key={account.number} value={account.number}>{account.number}</option>
+                    <option className='form-option options' key={account.number} value={account.number}>{account.number}</option>
                   ))}
               </select>
-            ) : formData.accountType === 'Other' ? (
-              <>
-                <input
-                  className="form-input"
-                  type="text"
-                  id="destinationAccount"
-                  name="destinationAccount"
-                  value={formData.destinationAccount}
-                  onChange={handleDestinationAccountChange}
-                  placeholder="Enter destination account number (e.g., VIN123)"
-                />
-                {destinationAccountError && (
-                  <p className="error-message">{destinationAccountError}</p>
-                )}
-              </>
+            ) : formData.accountType === 'other' ? (
+              <input
+                className={`form-input options ${!selectedAccount ? 'disabled' : ''}`}
+                type="text"
+                id="destinationAccount"
+                name="destinationAccount"
+                value={formData.destinationAccount}
+                onChange={handleDestinationAccountChange}
+                placeholder="Enter destination account number (e.g., VIN123)"
+                disabled={!selectedAccount}
+              />
             ) : (
               <select
-                className="form-select"
+                className={`form-select options ${!selectedAccount ? 'disabled' : ''}`}
                 id="savedAccount"
                 name="savedAccount"
                 value={formData.destinationAccount}
                 onChange={handleDestinationAccountChange}
+                disabled={!selectedAccount}
               >
-                <option className='form-option' value="" disabled>Select a saved account:</option>
+                <option className='form-option options' value="" disabled>Select a saved account:</option>
                 {contactAccounts.map((account, index) => (
-                  <option className='form-option' key={index} value={account}>{account}</option>
+                  <option className='form-option options' key={index} value={account}>{account}</option>
                 ))}
               </select>
             )}
+            {!formData.destinationAccount && <p className="error-message">Please select or enter a destination account</p>}
           </div>
 
-          <div className="form-group">
-            <label className="form-label" htmlFor="amount">Amount:</label>
+          <div className="form-group options">
+            <label className="form-label options" htmlFor="amount">Amount:</label>
             <input
-              className={`form-input ${amountError ? 'input-error' : ''}`}
+              className={`form-input options ${amountError ? 'input-error' : ''}`}
               type="text"
               id="amount"
               name="amount"
@@ -420,24 +367,14 @@ function NewTransactionData() {
                 Available balance: {formatAmountToARS(selectedAccount.balance)}
               </p>
             )}
-            {formData.accountType === 'Own' && destinationAccountBalance !== null && (
-              <p className="amount-info">
-                Destination balance: {formatAmountToARS(destinationAccountBalance)}
-              </p>
-            )}
+            {!formData.amount && <p className="error-message">Please enter an amount</p>}
           </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="description">Description:</label>
-            <input
-              className="form-input"
-              type="text"
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleDescriptionChange}
-              placeholder="Enter a description"
-            />
+
+          <div className="form-group options">
+            <label className="form-label options" htmlFor="description">Description:</label>
+            <p className="form-description options">{formData.description}</p> 
           </div>
+
           <button
             type="submit"
             className={`submit-button ${!isFormValid ? 'button-disabled' : ''}`}

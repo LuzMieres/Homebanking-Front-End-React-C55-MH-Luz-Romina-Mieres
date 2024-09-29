@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout.jsx';
 import Accounts from './pages/Accounts';
 import AccountData from './components/AccountData';
-import NewAccountForm from './components/NewAccountForm';
+import NewAccountData from './components/NewAccountData';
 import { TransactionsProvider } from './context/TransactionsContext'; // Asegúrate de que la ruta sea correcta
 import { LoanProvider } from './context/LoanContext'; // Importar LoanProvider
 import NewTransaction from './pages/NewTransaction';
@@ -25,7 +25,7 @@ function App() {
             <Route element={<MainLayout />}>
               <Route path='/accounts' element={<Accounts />} />
               <Route path="/account/:id" element={<AccountData />} />
-              <Route path="/newAccount" element={<NewAccountForm />} />
+              <Route path="/newAccountData" element={<NewAccountData />} />
               <Route path="/newTransaction" element={<NewTransaction />} />
               <Route path='/cards' element={<Cards />} />
               <Route path='/newCard' element={<NewCard />} />

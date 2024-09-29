@@ -1,0 +1,223 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
+/* === Estilos del Formulario de Nueva Tarjeta (NewCardData) === */
+.new-card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Ocupa toda la altura de la ventana */
+    width: 100%;
+    padding: 1rem; /* Padding en todo el contenedor */
+    box-sizing: border-box;
+  }
+  
+  .new-card-form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    max-width: 1200px;
+    background-color: #ffffff; /* Fondo blanco */
+    padding: 1rem; /* Espaciado interno */
+    border-radius: 0.5rem; /* Borde redondeado */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Sombra */
+    gap: 1rem; /* Espaciado entre elementos */
+  }
+  
+  .new-card-image {
+    width: 100%; /* Ocupa todo el ancho */
+    max-width: 400px; /* Ancho máximo */
+    height: auto; /* Mantiene proporciones */
+    object-fit: cover; /* Ajuste de imagen */
+    margin-bottom: 1rem; /* Margen inferior */
+  }
+  
+  .new-card-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 500px; /* Ancho máximo */
+    gap: 1rem; /* Espaciado entre elementos */
+  }
+  
+  .form-group {
+    width: 100%; /* Ocupa todo el ancho */
+    margin-bottom: 0.5rem; /* Margen inferior */
+  }
+  
+  .form-label {
+    font-size: 0.875rem; /* Tamaño del texto */
+    color: #4b5563; /* Color gris oscuro */
+    margin-bottom: 0.25rem; /* Margen inferior */
+    display: block; /* Muestra el elemento como bloque */
+  }
+  
+  .form-select,
+  .form-input {
+    width: 100%; /* Ocupa todo el ancho */
+    padding: 0.5rem; /* Espaciado interno */
+    font-size: 0.875rem; /* Tamaño del texto */
+    background-color: #3c5494; /* Fondo azul */
+    color: #fff; /* Texto blanco */
+    border: none;
+    border-radius: 0.375rem; /* Borde redondeado */
+    transition: border-color 0.2s ease; /* Transición suave */
+  }
+  
+  .form-select:focus,
+  .form-input:focus {
+    outline: none; /* Sin borde de enfoque */
+    border-color: #2563eb; /* Borde azul al enfocar */
+  }
+  
+  .input-error {
+    border-color: #ef4444; /* Borde rojo para errores */
+  }
+  
+  .form-option {
+    background-color: #1e3a8a; /* Fondo azul */
+    color: #000000; /* Texto blanco */
+  }
+  
+  .error-message {
+    font-size: 0.875rem; /* Tamaño del texto */
+    color: #ef4444; /* Color rojo */
+    margin-top: 0.25rem; /* Margen superior */
+  }
+  
+  .submit-button {
+    width: 100%; /* Ocupa todo el ancho */
+    padding: 0.75rem; /* Espaciado interno */
+    font-size: 0.875rem; /* Tamaño del texto */
+    background-color: #1e3a8a; /* Fondo azul oscuro */
+    color: #ffffff; /* Texto blanco */
+    border: none;
+    border-radius: 0.375rem; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor a mano */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones */
+  }
+  
+  .submit-button:hover {
+    background-color: #2563eb; /* Azul claro al pasar el cursor */
+    transform: translateY(-2px); /* Sube el botón ligeramente */
+  }
+  
+  .button-disabled {
+    background-color: #9ca3af; /* Gris para botón deshabilitado */
+    cursor: not-allowed; /* Cursor no permitido */
+  }
+  
+  @media (min-width: 640px) {
+    .form-label {
+      font-size: 1rem; /* Tamaño del texto en pantallas medianas */
+    }
+  
+    .form-select,
+    .form-input {
+      font-size: 1rem; /* Tamaño del texto en pantallas medianas */
+    }
+  
+    .submit-button {
+      font-size: 1rem; /* Tamaño del texto en pantallas medianas */
+    }
+  
+    .error-message {
+      font-size: 1rem; /* Tamaño del texto en pantallas medianas */
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .new-card-form-container {
+      flex-direction: row; /* Formulario en fila */
+      padding: 2rem; /* Espaciado interno */
+      gap: 2rem; /* Espaciado entre elementos */
+    }
+  
+    .new-card-image {
+      width: 50%; /* Ocupa el 50% del contenedor */
+      max-width: 600px; /* Ancho máximo */
+    }
+  
+    .new-card-form {
+      width: 50%; /* Ocupa el 50% del contenedor */
+      max-width: none; /* Sin límite de ancho */
+    }
+  
+    .form-select,
+    .form-input {
+      font-size: 1.125rem; /* Tamaño del texto en pantallas grandes */
+      padding: 0.75rem; /* Espaciado interno */
+    }
+  
+    .submit-button {
+      font-size: 1.125rem; /* Tamaño del texto en pantallas grandes */
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .new-card-form-container {
+      max-width: 1400px; /* Ancho máximo */
+      padding: 3rem; /* Espaciado interno */
+    }
+  
+    .new-card-image {
+      width: 45%; /* Ocupa el 45% del contenedor */
+    }
+  
+    .new-card-form {
+      width: 45%; /* Ocupa el 45% del contenedor */
+    }
+  
+    .form-label,
+    .form-select,
+    .form-input,
+    .submit-button,
+    .error-message {
+      font-size: 1.25rem; /* Tamaño del texto en pantallas extra grandes */
+    }
+  }
+  
+  @media (min-width: 1536px) {
+    .new-card-form-container {
+      max-width: 1600px; /* Ancho máximo */
+      padding: 4rem; /* Espaciado interno */
+    }
+  
+    .new-card-image {
+      width: 40%; /* Ocupa el 40% del contenedor */
+    }
+  
+    .new-card-form {
+      width: 40%; /* Ocupa el 40% del contenedor */
+    }
+  
+    .form-label,
+    .form-select,
+    .form-input,
+    .submit-button,
+    .error-message {
+      font-size: 1.5rem; /* Tamaño del texto en pantallas muy grandes */
+    }
+  }
+  
+  @media (min-width: 1920px) {
+    .new-card-form-container {
+      padding: 5rem; /* Espaciado interno */
+    }
+  
+    .form-label,
+    .form-select,
+    .form-input,
+    .submit-button,
+    .error-message {
+      font-size: 1.75rem; /* Tamaño del texto en pantallas ultra grandes */
+    }
+  }
+  

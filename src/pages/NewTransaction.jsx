@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import NewTransactionData from '../components/NewTransactionData';
 import { TransactionsContext } from '../context/TransactionsContext';
-import '../styles/style.css';
 
 function NewTransaction() {
   const { addTransaction } = useContext(TransactionsContext);

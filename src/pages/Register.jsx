@@ -1,6 +1,6 @@
 import React from 'react';
 import RegisterData from '../components/RegisterData';
-import '../styles/style.css';
+import '../styles/register.css';
 
 function Register() {
   return (

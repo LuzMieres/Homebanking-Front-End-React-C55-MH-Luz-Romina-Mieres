@@ -61,7 +61,7 @@ function AccountDetails() {
   // Simplificación de los datos de transacciones para mostrar en la tabla
   const simplifiedAccount = account.transactions.map((tr) => ({
     type: tr.type,
-    amount: tr.amount,
+    amount: tr.type === "DEBIT" ? -tr.amount : tr.amount,  // Mostrar negativo si es DEBIT
     date: tr.date.slice(0, 10),
     hour: tr.date.slice(11, 19),
     description: tr.description,
@@ -128,16 +128,14 @@ function AccountDetails() {
                     <td className="transaction-data">{transaction.date}</td>
                     <td className="transaction-data">{transaction.hour}</td>
                     <td
-                      className={`transaction-data ${
-                        transaction.type === "DEBIT" ? "text-red-500" : "text-green-500"
-                      }`}
+                      className={`transaction-data ${transaction.type === "DEBIT" ? "text-red-500" : "text-green-500"
+                        }`}
                     >
                       {transaction.type}
                     </td>
                     <td
-                      className={`transaction-data ${
-                        transaction.type === "DEBIT" ? "text-red-500" : "text-green-500"
-                      }`}
+                      className={`transaction-data ${transaction.type === "DEBIT" ? "text-red-500" : "text-green-500"
+                        }`}
                     >
                       {formatAmountToARS(transaction.amount)}
                     </td>

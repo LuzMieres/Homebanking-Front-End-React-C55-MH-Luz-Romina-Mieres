@@ -236,30 +236,30 @@ const NewLoanData = () => {
   }
 
   return (
-    <div className="new-loan-container flex flex-col items-center">
-      <div className="loan-form-container bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <img className="loan-image w-full h-32 mb-4 object-cover rounded" src="newLoan.png" alt="newLoan" />
-        <form onSubmit={handleSubmit} className="loan-form flex flex-col gap-4">
+    <div className="new-loan-container flex flex-col items-center w-full">
+      <div className="loan-form-container bg-white shadow-lg rounded-lg p-8 w-full">
+        <img className="loan-image w-full h-[50vh] md:h-[80vh] md:w-[50%] mb-4 object-cover rounded" src="newLoan.png" alt="newLoan" />
+        <form onSubmit={handleSubmit} className="loan-form flex flex-col w-full h-[50vh] md:h-[80vh] md:w-[50%] gap-4">
           <div className="form-group">
-            <label className="form-label" htmlFor="loanType">Select Loan Type</label>
+            <label className="form-label options" htmlFor="loanType">Select Loan Type</label>
             <select
-              className={`form-select border p-2 rounded ${!formData.name ? 'disabled' : ''}`}
+              className={`form-select border p-2 rounded options ${!formData.name ? 'disabled' : ''}`}
               id="loanType"
               name="name"
               value={formData.name}
               onChange={handleLoanChange}
             >
-              <option value="" disabled>Select a loan</option>
+              <option className='options' value="" disabled>Select a loan</option>
               {availableLoans.map(loan => (
-                <option key={loan.name} value={loan.name}>{loan.name}</option>
+                <option className='options' key={loan.name} value={loan.name}>{loan.name}</option>
               ))}
             </select>
             {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
           </div>
           <div className="form-group">
-            <label className="form-label" htmlFor="amount">Amount</label>
+            <label className="form-label options" htmlFor="amount">Amount</label>
             <input
-              className={`form-input border p-2 rounded ${amountError ? 'border-red-500' : ''} ${!selectedLoan ? 'disabled' : ''}`}
+              className={`form-input border p-2 rounded options ${amountError ? 'border-red-500' : ''} ${!selectedLoan ? 'disabled' : ''}`}
               type="text"
               id="amount"
               name="amount"
@@ -276,39 +276,39 @@ const NewLoanData = () => {
             )}
           </div>
           <div className="form-group">
-            <label className="form-label" htmlFor="payments">Select Payments</label>
+            <label className="form-label options" htmlFor="payments">Select Payments</label>
             <select
-              className={`form-select border p-2 rounded ${!formData.amount ? 'disabled' : ''}`}
+              className={`form-select border p-2 rounded options ${!formData.amount ? 'disabled' : ''}`}
               id="payments"
               name="payments"
               value={formData.payments}
               onChange={handlePaymentsChange}
               disabled={!formData.amount}
             >
-              <option value="" disabled>Select payment</option>
+              <option className='options' value="" disabled>Select payment</option>
               {selectedLoan ? (
                 selectedLoan.payments.map((payments, index) => (
-                  <option key={index} value={payments}>{payments} payments</option>
+                  <option className='options' key={index} value={payments}>{payments} payments</option>
                 ))
               ) : (
-                <option value="" disabled>Select a loan first</option>
+                <option className='options' value="" disabled>Select a loan first</option>
               )}
             </select>
             {errors.payments && <p className="text-red-500 text-xs">{errors.payments}</p>}
           </div>
           <div className="form-group">
-            <label className="form-label" htmlFor="sourceAccount">Select Account</label>
+            <label className="form-label options" htmlFor="sourceAccount">Select Account</label>
             <select
-              className={`form-select border p-2 rounded ${!formData.payments ? 'disabled' : ''}`}
+              className={`form-select border p-2 rounded options ${!formData.payments ? 'disabled' : ''}`}
               id="sourceAccount"
               name="sourceAccount"
               value={formData.sourceAccount}
               onChange={handleAccountChange}
               disabled={!formData.payments}
             >
-              <option value="" disabled>Select an account</option>
+              <option className='options' value="" disabled>Select an account</option>
               {client.accounts.map(account => (
-                <option key={account.id} value={account.number}>{account.number}</option>
+                <option className='options' key={account.id} value={account.number}>{account.number}</option>
               ))}
             </select>
             {errors.sourceAccount && <p className="text-red-500 text-xs">{errors.sourceAccount}</p>}

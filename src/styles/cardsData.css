@@ -1,7 +1,12 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
 /* Estilos para CardsData */
 .cards-container {
     width: 100%;
-    min-height: 100vh;
+    height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -10,6 +15,7 @@
     box-sizing: border-box;
     background-color: #f9fafb; /* Fondo gris claro */
     position: absolute;
+    overflow: hidden;
   }
   
   .card-type-selector {
@@ -74,6 +80,10 @@
     font-size: 1rem; /* Tamaño del texto */
     color: #ef4444; /* Color rojo */
     margin-top: 0.5rem;
+  }
+
+  .options{
+    color: black;
   }
   
   @media (min-width: 640px) {
