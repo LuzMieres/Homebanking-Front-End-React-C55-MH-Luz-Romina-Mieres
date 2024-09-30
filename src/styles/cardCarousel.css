@@ -141,3 +141,574 @@
   background-color: #1d4ed8; /* Cambia el color cuando está seleccionado */
   border-color: #1d4ed8; /* Cambia el borde cuando está seleccionado */
 }
+
+@media (min-width: 768px) {
+  .cards-carousel-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 410px; /* Ancho del contenedor ajustado */
+    height: 80vh;
+    position: relative;
+    overflow: hidden;
+    padding: 20px 0;
+  }
+  
+  .cards-carousel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+   }
+  
+  .cards-carousel-inner {
+    display: flex;
+    transition: transform 1.5s ease-in-out; /* Aumenta el tiempo de transición para que el deslizamiento sea más lento */
+  }
+  
+  .cards-carousel-card {
+    width: 390px; /* Ancho ajustado */
+    height: 220px; /* Alto ajustado */
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    transition: transform 0.6s; /* Transición para el giro */
+    transform-style: preserve-3d; /* Mantener 3D */
+    position: relative; /* Necesario para el giro */
+    margin: 0 10px; /* Espaciado entre tarjetas */
+  }
+  
+  .cards-carousel-card.flipped {
+    transform: rotateY(180deg); /* Rotar 180 grados en el eje Y */
+  }
+  
+  .card, .card-back {
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Ocultar la parte trasera cuando esté de frente */
+    border-radius: 10px;
+    position: absolute; /* Posicionamiento absoluto para ambas caras */
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .card-back {
+    transform: rotateY(180deg); /* Rotar la parte trasera */
+  }
+  
+  /* Posicionamiento del CVV */
+  .cvv-box {
+    position: absolute;
+    right: 10px; /* Ajuste a la derecha */
+    top: 105px; /* Ajuste superior */
+    width: auto;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0); /* Fondo transparente */
+    border-radius: 5px; /* Esquinas redondeadas */
+    display: flex;
+    align-items: center;
+  }
+  
+  .cvv-title {
+    font-size: 0.75rem;
+    font-weight: normal;
+    color: #000;
+  }
+  
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 55%;
+    padding: 1rem;
+    box-sizing: border-box;
+    position: absolute;
+    top: 98px;
+  }
+  
+  .cvv-number {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000;
+  }
+  
+  /* Estilos para los inputs de radio */
+  .carousel-radios {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 20px; /* Espaciado entre radio buttons */
+  }
+  
+  .radio-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .radio-input {
+    display: none; /* Ocultar input */
+  }
+  
+  .radio-label::before {
+    content: "";
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #cbd5e1; /* Gris claro */
+    border: 2px solid transparent;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  
+  .radio-input:checked + .radio-label::before {
+    background-color: #1d4ed8; /* Cambia el color cuando está seleccionado */
+    border-color: #1d4ed8; /* Cambia el borde cuando está seleccionado */
+  }
+}
+
+  @media (min-width: 1024px) {
+    .cards-carousel-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 410px; /* Ancho del contenedor ajustado */
+      height: 80vh;
+      position: relative;
+      overflow: hidden;
+      padding: 20px 0;
+    }
+    
+    .cards-carousel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      overflow: hidden;
+     }
+    
+    .cards-carousel-inner {
+      display: flex;
+      transition: transform 1.5s ease-in-out; /* Aumenta el tiempo de transición para que el deslizamiento sea más lento */
+    }
+    
+    .cards-carousel-card {
+      width: 390px; /* Ancho ajustado */
+      height: 220px; /* Alto ajustado */
+      flex-shrink: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+      transition: transform 0.6s; /* Transición para el giro */
+      transform-style: preserve-3d; /* Mantener 3D */
+      position: relative; /* Necesario para el giro */
+      margin: 0 10px; /* Espaciado entre tarjetas */
+    }
+    
+    .cards-carousel-card.flipped {
+      transform: rotateY(180deg); /* Rotar 180 grados en el eje Y */
+    }
+    
+    .card, .card-back {
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden; /* Ocultar la parte trasera cuando esté de frente */
+      border-radius: 10px;
+      position: absolute; /* Posicionamiento absoluto para ambas caras */
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .card-back {
+      transform: rotateY(180deg); /* Rotar la parte trasera */
+    }
+    
+    /* Posicionamiento del CVV */
+    .cvv-box {
+      position: absolute;
+      right: 10px; /* Ajuste a la derecha */
+      top: 105px; /* Ajuste superior */
+      width: auto;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0); /* Fondo transparente */
+      border-radius: 5px; /* Esquinas redondeadas */
+      display: flex;
+      align-items: center;
+    }
+    
+    .cvv-title {
+      font-size: 0.75rem;
+      font-weight: normal;
+      color: #000;
+    }
+    
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 55%;
+      padding: 1rem;
+      box-sizing: border-box;
+      position: absolute;
+      top: 98px;
+    }
+    
+    .cvv-number {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #000;
+    }
+    
+    /* Estilos para los inputs de radio */
+    .carousel-radios {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+      gap: 20px; /* Espaciado entre radio buttons */
+    }
+    
+    .radio-label {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+    
+    .radio-input {
+      display: none; /* Ocultar input */
+    }
+    
+    .radio-label::before {
+      content: "";
+      display: block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #cbd5e1; /* Gris claro */
+      border: 2px solid transparent;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+    
+    .radio-input:checked + .radio-label::before {
+      background-color: #1d4ed8; /* Cambia el color cuando está seleccionado */
+      border-color: #1d4ed8; /* Cambia el borde cuando está seleccionado */
+    }
+
+  
+}
+
+@media (min-width: 1440px) {
+  .cards-carousel-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 410px; /* Ancho del contenedor ajustado */
+    height: 80vh;
+    position: relative;
+    overflow: hidden;
+    padding: 20px 0;
+  }
+  
+  .cards-carousel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+   }
+  
+  .cards-carousel-inner {
+    display: flex;
+    transition: transform 1.5s ease-in-out; /* Aumenta el tiempo de transición para que el deslizamiento sea más lento */
+  }
+  
+  .cards-carousel-card {
+    width: 390px; /* Ancho ajustado */
+    height: 220px; /* Alto ajustado */
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    transition: transform 0.6s; /* Transición para el giro */
+    transform-style: preserve-3d; /* Mantener 3D */
+    position: relative; /* Necesario para el giro */
+    margin: 0 10px; /* Espaciado entre tarjetas */
+  }
+  
+  .cards-carousel-card.flipped {
+    transform: rotateY(180deg); /* Rotar 180 grados en el eje Y */
+  }
+  
+  .card, .card-back {
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Ocultar la parte trasera cuando esté de frente */
+    border-radius: 10px;
+    position: absolute; /* Posicionamiento absoluto para ambas caras */
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .card-back {
+    transform: rotateY(180deg); /* Rotar la parte trasera */
+  }
+  
+  /* Posicionamiento del CVV */
+  .cvv-box {
+    position: absolute;
+    right: 10px; /* Ajuste a la derecha */
+    top: 105px; /* Ajuste superior */
+    width: auto;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0); /* Fondo transparente */
+    border-radius: 5px; /* Esquinas redondeadas */
+    display: flex;
+    align-items: center;
+  }
+  
+  .cvv-title {
+    font-size: 0.75rem;
+    font-weight: normal;
+    color: #000;
+  }
+  
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 55%;
+    padding: 1rem;
+    box-sizing: border-box;
+    position: absolute;
+    top: 98px;
+  }
+  
+  .cvv-number {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000;
+  }
+  
+  /* Estilos para los inputs de radio */
+  .carousel-radios {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 20px; /* Espaciado entre radio buttons */
+  }
+  
+  .radio-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .radio-input {
+    display: none; /* Ocultar input */
+  }
+  
+  .radio-label::before {
+    content: "";
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #cbd5e1; /* Gris claro */
+    border: 2px solid transparent;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  
+  .radio-input:checked + .radio-label::before {
+    background-color: #1d4ed8; /* Cambia el color cuando está seleccionado */
+    border-color: #1d4ed8; /* Cambia el borde cuando está seleccionado */
+  }
+
+}
+
+@media (min-width: 2050px) {
+  .cards-carousel-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 410px; /* Ancho del contenedor ajustado */
+    height: 80vh;
+    position: relative;
+    overflow: hidden;
+    padding: 20px 0;
+  }
+  
+  .cards-carousel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+   }
+  
+  .cards-carousel-inner {
+    display: flex;
+    transition: transform 1.5s ease-in-out; /* Aumenta el tiempo de transición para que el deslizamiento sea más lento */
+  }
+  
+  .cards-carousel-card {
+    width: 390px; /* Ancho ajustado */
+    height: 220px; /* Alto ajustado */
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    transition: transform 0.6s; /* Transición para el giro */
+    transform-style: preserve-3d; /* Mantener 3D */
+    position: relative; /* Necesario para el giro */
+    margin: 0 10px; /* Espaciado entre tarjetas */
+  }
+  
+  .cards-carousel-card.flipped {
+    transform: rotateY(180deg); /* Rotar 180 grados en el eje Y */
+  }
+  
+  .card, .card-back {
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Ocultar la parte trasera cuando esté de frente */
+    border-radius: 10px;
+    position: absolute; /* Posicionamiento absoluto para ambas caras */
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .card-back {
+    transform: rotateY(180deg); /* Rotar la parte trasera */
+  }
+  
+  /* Posicionamiento del CVV */
+  .cvv-box {
+    position: absolute;
+    right: 10px; /* Ajuste a la derecha */
+    top: 105px; /* Ajuste superior */
+    width: auto;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0); /* Fondo transparente */
+    border-radius: 5px; /* Esquinas redondeadas */
+    display: flex;
+    align-items: center;
+  }
+  
+  .cvv-title {
+    font-size: 0.75rem;
+    font-weight: normal;
+    color: #000;
+  }
+  
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 55%;
+    padding: 1rem;
+    box-sizing: border-box;
+    position: absolute;
+    top: 98px;
+  }
+  
+  .cvv-number {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000;
+  }
+  
+  /* Estilos para los inputs de radio */
+  .carousel-radios {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 20px; /* Espaciado entre radio buttons */
+  }
+  
+  .radio-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .radio-input {
+    display: none; /* Ocultar input */
+  }
+  
+  .radio-label::before {
+    content: "";
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #cbd5e1; /* Gris claro */
+    border: 2px solid transparent;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  
+  .radio-input:checked + .radio-label::before {
+    background-color: #1d4ed8; /* Cambia el color cuando está seleccionado */
+    border-color: #1d4ed8; /* Cambia el borde cuando está seleccionado */
+  }
+
+}
+
+
+

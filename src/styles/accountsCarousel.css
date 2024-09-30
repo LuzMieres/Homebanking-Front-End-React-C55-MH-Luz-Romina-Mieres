@@ -9,20 +9,21 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 80%; /* Ancho del contenedor al 100% del viewport */
-  height: 80vh; /* Ajuste de tamaño del contenedor al 80% del viewport height */
+  width: 80%;
+  /* Ancho del contenedor al 100% del viewport */
+  height: 80vh;
+  /* Ajuste de tamaño del contenedor al 80% del viewport height */
   position: relative;
   overflow: hidden;
-  padding: 20px 0;
   background-color: white;
-  padding-left: 10px;
 }
 
 .accounts-carousel {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 50%; /* Aseguramos que ocupe todo el ancho */
+  width: 100%;
+  /* Aseguramos que ocupe todo el ancho */
   height: 100%;
   overflow: hidden;
   background-color: white;
@@ -30,18 +31,22 @@
 
 .accounts-carousel-inner {
   display: flex;
-  transition: transform 1.5s ease-in-out; 
+  transition: transform 1.5s ease-in-out;
   width: 100%;
-  justify-content: center; /* Centra las tarjetas */
+  justify-content: center;
+  /* Centra las tarjetas */
 }
 
 .accounts-carousel-card {
-  width: 390px; /* Ancho ajustado */
-  height: 300px; /* Alto ajustado */
+  width: 390px;
+  /* Ancho ajustado */
+  height: 300px;
+  /* Alto ajustado */
   display: flex;
   justify-content: center;
   align-items: center;
-  perspective: 1000px; /* Necesario para el giro 3D */
+  perspective: 1000px;
+  /* Necesario para el giro 3D */
   margin: 0 10px;
   position: relative;
   overflow: hidden;
@@ -49,7 +54,7 @@
 }
 
 .account-card {
-  width: 90%;
+  width: 100%;
   height: 100%;
   position: absolute;
   border-radius: 10px;
@@ -59,10 +64,12 @@
 }
 
 .account-card.flipped {
-  transform: rotateY(180deg); /* Giro de 180 grados */
+  transform: rotateY(180deg);
+  /* Giro de 180 grados */
 }
 
-.account-card-front, .account-card-back {
+.account-card-front,
+.account-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -88,7 +95,8 @@
   margin-bottom: 10px;
 }
 
-.transactions-table th, .transactions-table td {
+.transactions-table th,
+.transactions-table td {
   padding: 8px;
   border: 1px solid #ddd;
 }
@@ -113,19 +121,24 @@
 
 /* Botón de nueva transferencia */
 .new-transaction-button {
-  background-color: #1a2a4b; /* Fondo azul */
-    color: #ffffff; /* Texto blanco */
-    padding: 0.75rem 1.5rem;
-    font-size: 1.25rem; /* Tamaño del texto */
-    border: none;
-    border-radius: 0.375rem; /* Borde redondeado */
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+  background-color: #1a2a4b;
+  /* Fondo azul */
+  color: #ffffff;
+  /* Texto blanco */
+  padding: 0.75rem 1.5rem;
+  font-size: 1.25rem;
+  /* Tamaño del texto */
+  border: none;
+  border-radius: 0.375rem;
+  /* Borde redondeado */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .new-transaction-button:hover {
-  background-color: #1e40af; /* hover:bg-blue-700 */
-    transform: translateY(-2px);
+  background-color: #1e40af;
+  /* hover:bg-blue-700 */
+  transform: translateY(-2px);
 }
 
 /* Radios de navegación */
@@ -143,14 +156,14 @@
   display: none;
 }
 
-.radio-input + label {
+.radio-input+label {
   background-color: #ccc;
   border-radius: 50%;
   padding: 5px;
   cursor: pointer;
 }
 
-.radio-input:checked + label {
+.radio-input:checked+label {
   background-color: #1d4ed8;
 }
 
@@ -160,3 +173,116 @@
   margin-bottom: 10px;
   color: #555;
 }
+
+@media (min-width: 768px) {
+
+  .accounts-carousel-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    /* Ancho del contenedor al 100% del viewport */
+    height: 80vh;
+    /* Ajuste de tamaño del contenedor al 80% del viewport height */
+    position: relative;
+    overflow: hidden;
+    background-color: white;
+  }
+
+  .account-card {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 10px;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+}
+
+@media (min-width: 1024px) {
+
+  .accounts-carousel-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    /* Ancho del contenedor al 100% del viewport */
+    height: 80vh;
+    /* Ajuste de tamaño del contenedor al 80% del viewport height */
+    position: relative;
+    overflow: hidden;
+    background-color: white;
+  }
+
+  .account-card {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 10px;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+}
+
+@media (min-width: 1440px) {
+
+  .accounts-carousel-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    /* Ancho del contenedor al 100% del viewport */
+    height: 80vh;
+    /* Ajuste de tamaño del contenedor al 80% del viewport height */
+    position: relative;
+    overflow: hidden;
+    background-color: white;
+  }
+
+  .account-card {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 10px;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+}
+
+@media (min-width: 2560px) {
+
+  .accounts-carousel-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    /* Ancho del contenedor al 100% del viewport */
+    height: 80vh;
+    /* Ajuste de tamaño del contenedor al 80% del viewport height */
+    position: relative;
+    overflow: hidden;
+    background-color: white;
+  }
+
+  .account-card {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 10px;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+}
+

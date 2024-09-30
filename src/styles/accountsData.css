@@ -3,32 +3,42 @@
 @import 'tailwindcss/utilities';
 
 
-/* Estilos para AccountsData */
+/* Estilos para CardsData */
 .accounts-container {
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 2rem; /* p-8 */
-  }
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  background-color: #8eafd100;
+  overflow: hidden;
+  border-radius: 40px;
+}
   
-  .no-accounts-message {
-    color: #9ca3af; /* text-gray-500 */
-    font-size: 1.5rem; /* text-xl */
-    margin-bottom: 1rem;
-  }
+.form-radio {
+    accent-color: #2563eb; /* Color de radio button */
+    cursor: pointer;
+}
   
-  .request-account-container {
-    margin-top: 1rem; /* mt-4 */
+.no-account-message {
+    font-size: 1.25rem; /* Tamaño del texto */
+    color: #181a1f; /* Color gris claro */
+    text-align: center;
+    margin-bottom: 2rem;
+}
+  
+.request-account-container {
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-  }
+    width: 100%;
+}
   
-  .request-account-button {
+.request-account-button {
     background-color: #1a2a4b; /* Fondo azul */
     color: #ffffff; /* Texto blanco */
     padding: 0.75rem 1.5rem;
@@ -37,20 +47,179 @@
     border-radius: 0.375rem; /* Borde redondeado */
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-  }
+}
   
-  .request-account-button:hover {
-    background-color: #1e40af; /* hover:bg-blue-700 */
+.request-account-button:hover {
+    background-color: #1e40af; /* Fondo azul oscuro al pasar el cursor */
     transform: translateY(-2px);
+}
+  
+.request-account-button.disabled {
+    background-color: #9ca3af; /* Fondo gris claro */
+    cursor: not-allowed; /* Cursor no permitido */
+}
+  
+.error-message {
+    font-size: 1rem; /* Tamaño del texto */
+    color: #ef4444; /* Color rojo */
+    margin-top: 0.5rem;
+}
+
+.options{
+    color: black;
+}
+  
+@media (min-width: 640px) {
+  .card-type-selector {
+      gap: 3rem;
+  }
+
+  .accounts-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background-color: #8eafd100;
+    overflow: hidden;
+    border-radius: 40px;
+  }
+      
+      
+    .form-radio {
+      accent-color: #2563eb; /* Color de radio button */
+      cursor: pointer;
+    }
+      
+    .no-account-message {
+      font-size: 1.25rem; /* Tamaño del texto */
+      color: #181a1f; /* Color gris claro */
+      text-align: center;
+       margin-bottom: 2rem;
+    }
+      
+    .request-account-container {
+       margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+    }
+      
+    .request-account-button {
+      background-color: #1a2a4b; /* Fondo azul */
+      color: #ffffff; /* Texto blanco */
+      padding: 0.75rem 1.5rem;
+      font-size: 1.25rem; /* Tamaño del texto */
+      border: none;
+      border-radius: 0.375rem; /* Borde redondeado */
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+      
+      .request-account-button:hover {
+        background-color: #1e40af; /* Fondo azul oscuro al pasar el cursor */
+        transform: translateY(-2px);
+      }
+      
+      .request-account-button.disabled {
+        background-color: #9ca3af; /* Fondo gris claro */
+        cursor: not-allowed; /* Cursor no permitido */
+      }
+      
+      .error-message {
+        font-size: 1rem; /* Tamaño del texto */
+        color: #ef4444; /* Color rojo */
+        margin-top: 0.5rem;
+      }
+    
+      .options{
+        color: black;
+      }
   }
   
-  .request-account-button.disabled {
-    background-color: #9ca3af; /* bg-gray-400 */
-    cursor: not-allowed;
+  @media (min-width: 768px) {
+    .accounts-container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      background-color: #8eafd100;
+      overflow: hidden;
+      border-radius: 40px;
+    }
+      
+      .form-radio {
+        accent-color: #2563eb; /* Color de radio button */
+        cursor: pointer;
+      }
+      
+      .no-accounts-message {
+        font-size: 1.25rem; /* Tamaño del texto */
+        color: #181a1f; /* Color gris claro */
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      
+      .request-account-container {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+      }
+      
+      .request-account-button {
+        background-color: #1a2a4b; /* Fondo azul */
+        color: #ffffff; /* Texto blanco */
+        padding: 0.75rem 1.5rem;
+        font-size: 1.25rem; /* Tamaño del texto */
+        border: none;
+        border-radius: 0.375rem; /* Borde redondeado */
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+      
+      .request-account-button:hover {
+        background-color: #1e40af; /* Fondo azul oscuro al pasar el cursor */
+        transform: translateY(-2px);
+      }
+      
+      .request-account-button.disabled {
+        background-color: #9ca3af; /* Fondo gris claro */
+        cursor: not-allowed; /* Cursor no permitido */
+      }
+      
+      .error-message {
+        font-size: 1rem; /* Tamaño del texto */
+        color: #ef4444; /* Color rojo */
+        margin-top: 0.5rem;
+      }
+    
+      .options{
+        color: black;
+      }
   }
   
-  .error-message {
-    color: #ef4444; /* text-red-500 */
-    font-size: 1rem; /* text-lg */
+  @media (min-width: 1024px) {
+    .accounts-container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: center;
+      box-sizing: border-box;
+      background-color: #8eafd100;
+      overflow: hidden;
+      border-radius: 40px;
+    }
   }
   

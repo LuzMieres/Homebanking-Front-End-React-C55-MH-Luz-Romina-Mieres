@@ -35,7 +35,13 @@ const NewLoanData = () => {
     payments: '',
   });
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({
+    name: 'Please select a loan type.',
+    amount: 'Please enter an amount.',
+    payments: 'Please select a payment option.',
+    sourceAccount: 'Please select a destination account.',
+  });
+
   const [rawAmount, setRawAmount] = useState('');
   const [selectedLoan, setSelectedLoan] = useState(null);
   const [amountError, setAmountError] = useState(false);
@@ -62,10 +68,10 @@ const NewLoanData = () => {
   }, [error]);
 
   useEffect(() => {
-    const isValid = formData.name && formData.sourceAccount && rawAmount && formData.payments && !amountError && Object.keys(errors).length === 0;
+    const isValid = formData.name && formData.sourceAccount && rawAmount && formData.payments && !amountError && Object.keys(errors).every(key => errors[key] === '');
     setIsFormValid(isValid);
   }, [formData, rawAmount, amountError, errors]);
-  
+
   function handleLoanChange(event) {
     const selectedName = event.target.value;
     const loan = availableLoans.find(l => l.name === selectedName);
@@ -80,7 +86,10 @@ const NewLoanData = () => {
     setAmountError(false);
     setErrors(prevErrors => ({
       ...prevErrors,
-      name: loan ? '' : 'Please select a loan type.',
+      name: '',
+      amount: 'Please enter an amount.',
+      payments: 'Please select a payment option.',
+      sourceAccount: 'Please select a destination account.',
     }));
   }
 
@@ -92,7 +101,7 @@ const NewLoanData = () => {
     }));
     setErrors(prevErrors => ({
       ...prevErrors,
-      sourceAccount: selectedAccount ? '' : 'Please select an account.',
+      sourceAccount: selectedAccount ? '' : 'Please select a destination account.',
     }));
   }
 
@@ -129,19 +138,8 @@ const NewLoanData = () => {
     }));
     setErrors(prevErrors => ({
       ...prevErrors,
-      payments: selectedPayments ? '' : 'Please select a payment.',
+      payments: selectedPayments ? '' : 'Please select a payment option.',
     }));
-  }
-
-  function handleAmountBlur() {
-    const numericValue = rawAmount ? parseFloat(rawAmount) : '';
-    if (!isNaN(numericValue)) {
-      const formattedAmount = formatAmountToARS(numericValue);
-      setFormData(prevState => ({
-        ...prevState,
-        amount: formattedAmount,
-      }));
-    }
   }
 
   function formatAmountToARS(amount) {
@@ -149,10 +147,6 @@ const NewLoanData = () => {
       return '';
     }
     return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amount);
-  }
-
-  function calculateTotalWithInterest(amount, interestRate) {
-    return amount + (amount * interestRate / 100);
   }
 
   function handleSubmit(event) {
@@ -167,33 +161,23 @@ const NewLoanData = () => {
       return;
     }
   
-    if (amountError) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Amount Exceeded',
-        text: 'The amount exceeds the maximum allowed for this loan.',
-      });
-      return;
-    }
-  
     const rawAmountValue = parseFloat(rawAmount);
-    const totalWithInterest = calculateTotalWithInterest(rawAmountValue, selectedLoan.interestRate);
   
     const newLoan = {
       loanName: formData.name,
       amount: rawAmountValue,
-      totalAmount: totalWithInterest,
       payments: formData.payments,
       destinationAccountNumber: formData.sourceAccount,
     };
   
+    // Confirmación antes de realizar la solicitud de préstamo
     Swal.fire({
       title: 'Confirm Loan Request',
       html: `
         <strong>Loan Type:</strong> ${formData.name} <br/>
         <strong>Amount:</strong> ${formatAmountToARS(rawAmountValue)} <br/>
         <strong>Payments:</strong> ${formData.payments} <br/>
-        <strong>Total with Interest:</strong> ${formatAmountToARS(totalWithInterest)} <br/>
+        <strong>Destination Account:</strong> ${formData.sourceAccount} <br/>
       `,
       icon: 'info',
       showCancelButton: true,
@@ -201,32 +185,39 @@ const NewLoanData = () => {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(requestNewLoanAction(newLoan));
+        dispatch(requestNewLoanAction(newLoan)); // Solicitar el préstamo si el usuario confirma
+  
+        // Mostrar mensaje de éxito y redirigir a la página de préstamos
+        Swal.fire({
+          icon: 'success',
+          title: 'Loan Requested',
+          text: `Your loan request has been successfully submitted for an amount of ${formatAmountToARS(rawAmountValue)}.`,
+          confirmButtonText: 'OK',
+        }).then(() => {
+          navigate('/accounts'); // Redirigir a la página de préstamos
+        });
       }
     });
   }
   
+
   useEffect(() => {
     if (loanRequestStatus === 'fulfilled') {
-      console.log('Loan request completed successfully');
-      dispatch(loadCurrentUserAction()).then(() => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Loan Requested',
-          text: `Your loan request has been successfully submitted for an amount of ${formatAmountToARS(rawAmount)}.`,
-          timer: 1500,
-          showConfirmButton: false,
-        });
-        setTimeout(() => {
-          navigate('/loans');
-        }, 1500);
+      // Mostrar mensaje de éxito y redirigir a la página de préstamos
+      Swal.fire({
+        icon: 'success',
+        title: 'Loan Requested',
+        text: `Your loan request has been successfully submitted for an amount of ${formatAmountToARS(rawAmount)}.`,
+        confirmButtonText: 'OK',
+      }).then(() => {
+        navigate('/loans');
       });
     } else if (loanRequestStatus === 'rejected') {
-      console.log('Loan request failed:', loanRequestError);
+      // Mostrar mensaje de error si la solicitud falla
       Swal.fire({
         icon: 'error',
-        title: 'Error',
-        text: loanRequestError || 'An error occurred while requesting the loan. Please try again later.',
+        title: 'Loan Request Failed',
+        text: loanRequestError || 'An error occurred while processing the loan request.',
       });
     }
   }, [loanRequestStatus, loanRequestError, dispatch, navigate, rawAmount]);
@@ -263,9 +254,8 @@ const NewLoanData = () => {
               type="text"
               id="amount"
               name="amount"
-              value={formData.amount}
+              value={rawAmount}
               onChange={handleAmountChange}
-              onBlur={handleAmountBlur}
               disabled={!selectedLoan}
             />
             {errors.amount && <p className="text-red-500 text-xs">{errors.amount}</p>}

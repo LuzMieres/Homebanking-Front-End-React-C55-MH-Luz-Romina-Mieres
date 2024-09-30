@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { newAccountAction } from "../redux/actions/newAccountAction";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'; // Importa la integración con React
+import "../styles/newAccountsData.css"
 
 const MySwal = withReactContent(Swal); // Crear una instancia de SweetAlert con soporte para React
 

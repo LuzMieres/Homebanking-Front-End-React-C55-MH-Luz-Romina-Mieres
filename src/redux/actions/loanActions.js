@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 // Acción para solicitar un nuevo préstamo
 export const requestNewLoanAction = createAsyncThunk(
   "loans/requestNewLoan",
-  async ({ loanName, amount, payments, destinationAccountNumber }, { rejectWithValue }) => {
+  async ({ loanName, amount, payments, destinationAccountNumber }, { rejectWithValue, dispatch }) => {
     const token = localStorage.getItem("token");
     if (!token) {
       return rejectWithValue("No token available");
@@ -33,16 +33,18 @@ export const requestNewLoanAction = createAsyncThunk(
         loanName,
         amount,
         payments,
-        destinationAccountNumber, // Asegúrate de que este campo sea enviado correctamente
+        destinationAccountNumber,
       }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
       
+      // Cargar los datos actualizados del cliente tras la solicitud exitosa
+      dispatch(loadCurrentUserAction()); // Esto recarga todos los datos del cliente
+
       return response.data; // Devuelve los datos del préstamo creado
     } catch (error) {
-      // Si el backend regresa un error, se captura aquí
       console.error("Error en la solicitud de préstamo:", error.response?.data || error.message);
       return rejectWithValue(
         error.response?.data || "There was a problem with the request."
@@ -50,6 +52,7 @@ export const requestNewLoanAction = createAsyncThunk(
     }
   }
 );
+
 
 export const loadClientLoans = createAsyncThunk(
   "loans/loadClientLoans",
