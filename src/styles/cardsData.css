@@ -5,18 +5,20 @@
 
 /* Estilos para CardsData */
 .cards-container {
-    width: 100%;
-    height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem; /* Espaciado alrededor del contenedor */
-    box-sizing: border-box;
-    background-color: #f9fafb; /* Fondo gris claro */
-    position: absolute;
-    overflow: hidden;
-  }
+  width: 48%;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+  background-color: #8eafd100;
+  position: absolute;
+  overflow: hidden;
+  bottom: 100px;
+  border-radius: 40px;
+}
   
   .card-type-selector {
     display: flex;

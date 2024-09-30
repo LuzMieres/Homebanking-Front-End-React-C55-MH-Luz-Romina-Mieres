@@ -10,7 +10,7 @@ export const savedAccounts = JSON.parse(localStorage.getItem('savedAccounts')) |
 
 function NewTransactionData() {
   const [formData, setFormData] = useState({
-    accountType: '',
+    accountType: '', // Este será el transferType que esperas
     sourceAccount: '',
     destinationAccount: '',
     amount: '',
@@ -195,6 +195,7 @@ function NewTransactionData() {
       destinationAccountNumber: formData.destinationAccount,
       amount: numericAmount,
       description: formData.description,
+      transferType: formData.accountType, // Aquí se envía el transferType como "own" o "other"
     };
 
     Swal.fire({

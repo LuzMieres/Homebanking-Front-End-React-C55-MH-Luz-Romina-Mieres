@@ -71,6 +71,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 10px;
+  padding-right: 116px;
 }
 
 .account-card-back {
@@ -80,7 +81,7 @@
 
 /* Estilos de la tabla */
 .transactions-table {
-  width: 100%;
+  width: 153%;
   text-align: center;
   border-collapse: collapse;
   margin-top: 10px;
@@ -93,7 +94,7 @@
 }
 
 .transactions-table th {
-  background-color: #f1f1f1;
+  background-color: #2348ec;
 }
 
 .transactions-table .text-red {
